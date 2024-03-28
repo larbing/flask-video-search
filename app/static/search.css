@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f1f1;
+}
+.search-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.search-form input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.search-form button {
+    width: 20%;
+    padding: 10px;
+    border: none;
+    background-color: #4285f4;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+.search-form button:hover {
+    background-color: #357ae8;
+}
+.search-results h2 {
+    color: #4285f4;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+.search-results ul {
+    list-style-type: none;
+    padding: 0;
+}
+.search-results li {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.search-results a {
+    text-decoration: none;
+    color: #333;
+    flex-grow: 1;
+}
+.search-results a:hover {
+    color: #4285f4;
+}
+.search-results img {
+    width: 100px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+.search-results .title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.search-results .snippet {
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.search-results .url:hover {
+    color: #4285f4;
+    text-decoration: underline;
+}
+.highlight {
+    background-color: #f1f1f1;
+}
+@keyframes highlight {
+    0% { background-color: #fff; }
+    100% { background-color: #f1f1f1; }
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.pagination a:hover {
+    color: #4285f4;
+    border-color: #4285f4;
+}
+.pagination .active {
+    background-color: #4285f4;
+    color: #fff;
+    border-color: #4285f4;
+}
+.episode-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.episode-nav a {
+    color: #333;
+    text-decoration: none;
+}
+.episode-nav a:hover {
+    color: #4285f4;
+}
+.result-count {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #333;
+}

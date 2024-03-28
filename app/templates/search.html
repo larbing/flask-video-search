@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Search Results</title>
+    <link rel="stylesheet" type="text/css" href="/static/search.css" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchResults = document.querySelectorAll('.search-results li');
+            var resultCount = searchResults.length;
+            var resultCountElement = document.createElement('div');
+            resultCountElement.className = 'result-count';
+            resultCountElement.textContent = 'Showing ' + resultCount + ' results';
+            document.querySelector('.search-results').prepend(resultCountElement);
+
+            searchResults.forEach(function(result) {
+                result.addEventListener('click', function() {
+                    searchResults.forEach(function(res) {
+                        res.classList.remove('highlight');
+                    });
+                    this.classList.add('highlight');
+                    this.style.animation = 'highlight 0.3s forwards';
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="search-container">
+        <div class="search-form">
+            <input type="text" placeholder="Search videos...">
+            <button>Search</button>
+        </div>
+        <div class="search-results">
+            <h2>Search Results for "Example Video Series"</h2>
+            <ul>
+                <li>
+                    <img src="video-thumbnail-1.jpg" alt="Video Thumbnail">
+                    <div>
+                        <a href="video-episode-1.html">
+                            <div class="title">Episode 1: Introduction</div>
+                            <div class="snippet">This is the first episode of the video series.</div>
+                        </a>
+                        <div class="episode-nav">
+                            <a href="video-episode-1.html">Episode 1</a>
+                            <a href="video-episode-2.html">Episode 2</a>
+                            <a href="video-episode-3.html">Episode 3</a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <img src="video-thumbnail-2.jpg" alt="Video Thumbnail">
+                    <div>
+                        <a href="video-episode-2.html">
+                            <div class="title">Episode 2: Getting Started</div>
+                            <div class="snippet">This episode covers the basics of the video series.</div>
+                        </a>
+                        <div class="episode-nav">
+                            <a href="video-episode-1.html">Episode 1</a>
+                            <a href="video-episode-2.html">Episode 2</a>
+                            <a href="video-episode-3.html">Episode 3</a>
+                        </div>
+                    </div>
+                </li>
+                <!-- Add more video search results as needed -->
+            </ul>
+            <div class="pagination">
+                <a href="#">&laquo; Previous</a>
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">Next &raquo;</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
