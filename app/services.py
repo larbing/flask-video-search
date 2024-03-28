@@ -31,6 +31,6 @@ class IndexService:
         qp = QueryParser("category", ix.schema)
         with ix.searcher() as searcher:
             query = qp.parse(keyword)
-            results = searcher.search(query,limit=20)
+            results = searcher.search_page(query,1)
             return [result.values() for result in results]
                 
