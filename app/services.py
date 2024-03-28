@@ -5,32 +5,29 @@ from whoosh.qparser import QueryParser
 from jieba.analyse import ChineseAnalyzer
 
 from .conf import *
+from . import singleton
 
-class Service:
-    pass
-
-
+@singleton
 class IndexService:
-
 
     def __init__(self) -> None:
         self.analyzer = ChineseAnalyzer()
         self.schema = Schema(
-        id=ID(stored=True),
-        title=TEXT(stored=True,analyzer=self.analyzer), 
-        content=TEXT(analyzer=self.analyzer),
-        url=STORED,
-        region=KEYWORD(analyzer=self.analyzer),
-        category=KEYWORD(analyzer=self.analyzer),
-        update_context=KEYWORD(analyzer=self.analyzer)
-         )
+            id=ID(stored=True),
+            title=TEXT(stored=True,analyzer=self.analyzer), 
+            content=TEXT(analyzer=self.analyzer),
+            url=STORED,
+            region=KEYWORD(analyzer=self.analyzer),
+            category=KEYWORD(analyzer=self.analyzer),
+            update_context=KEYWORD(analyzer=self.analyzer)
+        )
+        self.ix = open_dir(indexdir,schema=self.schema)
         
 
-    def search(self,keyword):
-        ix = open_dir(indexdir,schema=self.schema)
-        qp = QueryParser("category", ix.schema)
-        with ix.searcher() as searcher:
+    def search(self,keyword,page_num=1,page_size=10):
+        qp = QueryParser("category", self.ix.schema)
+        with self.ix.searcher() as searcher:
             query = qp.parse(keyword)
-            results = searcher.search_page(query,1)
+            results = searcher.search_page(query,pagenum=page_num,pagelen=page_size)
             return [result.values() for result in results]
                 
