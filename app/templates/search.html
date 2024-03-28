@@ -29,41 +29,32 @@
 <body>
     <div class="search-container">
         <div class="search-form">
-            <input type="text" placeholder="Search videos...">
-            <button>Search</button>
+            <form action="/search" method="get" class="search-form">
+                <input type="text" name="q" placeholder="Search videos...">
+                <button>Search</button>
+            </from>
         </div>
         <div class="search-results">
-            <h2>Search Results for "Example Video Series"</h2>
+            <h2>Search Results for "{{ keyword }}"</h2>
             <ul>
+
+                {% for item in results %}
                 <li>
-                    <img src="video-thumbnail-1.jpg" alt="Video Thumbnail">
+                    <!-- <img src="video-thumbnail-1.jpg" alt="Video Thumbnail"> -->
                     <div>
-                        <a href="video-episode-1.html">
-                            <div class="title">Episode 1: Introduction</div>
+                        <a href="{{  item[0] }}">
+                            <div class="title">{{ item[1] }}</div>
                             <div class="snippet">This is the first episode of the video series.</div>
                         </a>
-                        <div class="episode-nav">
+                        <!-- <div class="episode-nav">
                             <a href="video-episode-1.html">Episode 1</a>
                             <a href="video-episode-2.html">Episode 2</a>
                             <a href="video-episode-3.html">Episode 3</a>
-                        </div>
+                        </div> -->
                     </div>
                 </li>
-                <li>
-                    <img src="video-thumbnail-2.jpg" alt="Video Thumbnail">
-                    <div>
-                        <a href="video-episode-2.html">
-                            <div class="title">Episode 2: Getting Started</div>
-                            <div class="snippet">This episode covers the basics of the video series.</div>
-                        </a>
-                        <div class="episode-nav">
-                            <a href="video-episode-1.html">第一集</a>
-                            <a href="video-episode-2.html">Episode 2</a>
-                            <a href="video-episode-3.html">Episode 3</a>
-                        </div>
-                    </div>
-                </li>
-                <!-- Add more video search results as needed -->
+                {% endfor %}
+                <!-- Add more vi        deo search results as needed -->
             </ul>
             <div class="pagination">
                 <a href="#">&laquo; Previous</a>

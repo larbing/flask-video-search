@@ -17,6 +17,10 @@ body {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    width: 80%;
+}
+.search-container form {
+    margin-top: 20px;
 }
 .search-form input[type="text"] {
     width: 70%;
