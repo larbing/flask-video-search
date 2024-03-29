@@ -6,6 +6,7 @@ from jieba.analyse import ChineseAnalyzer
 
 from .conf import *
 from . import singleton
+from .models import PageMaster
 
 @singleton
 class IndexService:
@@ -29,5 +30,8 @@ class IndexService:
         with self.ix.searcher() as searcher:
             query = qp.parse(keyword)
             results = searcher.search_page(query,pagenum=page_num,pagelen=page_size)
-            return [result.values() for result in results]
+            fields = [ result.fields() for result in results]
+            pageMaster = PageMaster(fields,page_num,page_size,results.pagecount,results.total)
+            
+            return pageMaster
                 

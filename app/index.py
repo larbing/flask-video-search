@@ -1,3 +1,4 @@
+import math
 from flask import Flask,render_template,request
 
 from .services import IndexService
@@ -14,6 +15,8 @@ def index():
 @app.route('/search')
 def search():
     keyword = request.args.get('q', '')
+    page_num = request.args.get('p', 1)
     service = IndexService()
-    results = service.search(keyword)
-    return render_template('search.html',keyword=keyword,results=results)
+    pageMaster = service.search(keyword,page_num=max(int(page_num),1))
+    
+    return render_template('search.html',keyword=keyword,pageMaster=pageMaster)

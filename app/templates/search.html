@@ -36,14 +36,16 @@
         </div>
         <div class="search-results">
             <h2>Search Results for "{{ keyword }}"</h2>
+            <h2>pageTotal for "{{ pageMaster.pagecount }}"</h2>
+            <h2>total for "{{ pageMaster.total }}"</h2>
             <ul>
 
-                {% for item in results %}
+                {% for item in pageMaster.resutls %}
                 <li>
                     <!-- <img src="video-thumbnail-1.jpg" alt="Video Thumbnail"> -->
                     <div>
-                        <a href="{{  item[0] }}">
-                            <div class="title">{{ item[1] }}</div>
+                        <a href="{{  item['url'] }}">
+                            <div class="title">{{ item['title'] }}</div>
                             <div class="snippet">This is the first episode of the video series.</div>
                         </a>
                         <!-- <div class="episode-nav">
@@ -57,11 +59,15 @@
                 <!-- Add more vi        deo search results as needed -->
             </ul>
             <div class="pagination">
-                <a href="#">&laquo; Previous</a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">Next &raquo;</a>
+                <a href="{{ pageMaster.get_up_page()  }}">&laquo; Previous</a>
+                {% for i in pageMaster.get_pagination() %}
+                    {% if pageMaster.is_current_page(i)  %}
+                        <a href="#" class="active">{{ i }}</a>
+                    {% else %}
+                        <a href="#">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+                <a href="{{ pageMaster.get_next_page()  }}">Next &raquo;</a>
             </div>
         </div>
     </div>
