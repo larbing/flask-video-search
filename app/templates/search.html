@@ -36,11 +36,8 @@
         </div>
         <div class="search-results">
             <h2>Search Results for "{{ keyword }}"</h2>
-            <h2>pageTotal for "{{ pageMaster.pagecount }}"</h2>
-            <h2>total for "{{ pageMaster.total }}"</h2>
             <ul>
-
-                {% for item in pageMaster.resutls %}
+                {% for item in pageMaster %}
                 <li>
                     <!-- <img src="video-thumbnail-1.jpg" alt="Video Thumbnail"> -->
                     <div>
@@ -59,15 +56,19 @@
                 <!-- Add more vi        deo search results as needed -->
             </ul>
             <div class="pagination">
-                <a href="{{ pageMaster.get_up_page()  }}">&laquo; Previous</a>
+                <!-- <a href="{{ url_for('search',q=keyword,p=1 ) }}">首页</a> -->
+                {% if pageMaster.pagecount > 1 %}
+                <a href="{{ url_for('search',q=keyword,p=pageMaster.get_up_page() ) }}">&laquo; 上一页</a>
                 {% for i in pageMaster.get_pagination() %}
                     {% if pageMaster.is_current_page(i)  %}
                         <a href="#" class="active">{{ i }}</a>
                     {% else %}
-                        <a href="#">{{ i }}</a>
+                        <a href="{{  url_for('search',q=keyword,p=i)  }}">{{ i }}</a>
                     {% endif %}
                 {% endfor %}
-                <a href="{{ pageMaster.get_next_page()  }}">Next &raquo;</a>
+                <a href="{{ url_for('search',q=keyword,p=pageMaster.get_next_page() ) }}">下一页 &raquo;</a>
+                {% endif %}
+                <!-- <a href="{{ url_for('search',q=keyword,p=pageMaster.pagecount ) }}"> 末页</a> -->
             </div>
         </div>
     </div>

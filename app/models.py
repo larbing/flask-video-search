@@ -11,9 +11,10 @@ class PageMaster(object):
         self.total     = total 
 
     def get_pagination(self):
-        num = max(self.pageN,1)
+        num = min(max(self.pageN,1),self.pagecount)
         start  = 1  if num <= 10  else num -5
-        end    = 10 if num <= 10  else min( num+10 // 2 , self.pagecount)        
+        end    = min(10 if num <= 10  else num+10 // 2,self.pagecount)
+
         return range(start,end+1)
     
     def get_next_page(self):

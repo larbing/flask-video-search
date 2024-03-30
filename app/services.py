@@ -26,7 +26,7 @@ class IndexService:
         
 
     def search(self,keyword,page_num=1,page_size=10):
-        qp = QueryParser("category", self.ix.schema)
+        qp = QueryParser("content", self.ix.schema)
         with self.ix.searcher() as searcher:
             query = qp.parse(keyword)
             results = searcher.search_page(query,pagenum=page_num,pagelen=page_size)

@@ -1,5 +1,5 @@
 import math
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request,url_for
 
 from .services import IndexService
 
@@ -18,5 +18,5 @@ def search():
     page_num = request.args.get('p', 1)
     service = IndexService()
     pageMaster = service.search(keyword,page_num=max(int(page_num),1))
-    
-    return render_template('search.html',keyword=keyword,pageMaster=pageMaster)
+    # print(url_for("search",q=keyword,p=page_num))
+    return render_template('search.html',keyword=keyword,pageMaster=pageMaster,url_for=url_for)
