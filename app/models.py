@@ -4,12 +4,12 @@
 class PageMaster(object):
 
     def __init__(self,resutls,pageN=0,pageSize=10,pagecount=0,total=0) -> None:
-        self.resutls = resutls
-        self.pageN = pageN
-        self.pageSize = pageSize
+        self.resutls   = resutls
+        self.pageN     = pageN
+        self.pageSize  = pageSize
         self.pagecount = pagecount
-        self.total = total 
-    
+        self.total     = total 
+
     def get_pagination(self):
         num = max(self.pageN,1)
         start  = 1  if num <= 10  else num -5
@@ -24,3 +24,9 @@ class PageMaster(object):
     
     def is_current_page(self,number):
         return self.pageN == number
+
+    def __iter__(self):
+        return self.resutls.__iter__()
+    
+    def __next__(self):
+        return self.resutls.__next__()
