@@ -6,7 +6,7 @@ from jieba.analyse import ChineseAnalyzer
 
 from .conf import *
 from . import singleton
-from .models import PageMaster
+from .models import Pagination
 
 @singleton
 class IndexService:
@@ -25,13 +25,13 @@ class IndexService:
         self.ix = open_dir(indexdir,schema=self.schema)
         
 
-    def search(self,keyword,page_num=1,page_size=10):
+    def search(self,keyword:str,page_num:int=1,page_size:int=10) -> Pagination:
         qp = QueryParser("category", self.ix.schema)
         with self.ix.searcher() as searcher:
             query = qp.parse(keyword)
             results = searcher.search_page(query,pagenum=page_num,pagelen=page_size)
             fields = [ result.fields() for result in results]
-            pageMaster = PageMaster(fields,page_num,page_size,results.pagecount,results.total)
+            pagination = Pagination(fields,page_num,page_size,results.pagecount,results.total)
             
-            return pageMaster
+            return pagination
                 

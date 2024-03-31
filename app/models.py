@@ -1,7 +1,7 @@
 
 
 
-class PageMaster(object):
+class Pagination(object):
 
     def __init__(self,resutls,pageN=0,pageSize=10,pagecount=0,total=0) -> None:
         self.resutls   = resutls
@@ -10,7 +10,7 @@ class PageMaster(object):
         self.pagecount = pagecount
         self.total     = total 
 
-    def get_pagination(self):
+    def get_pagination_bar(self):
         num = max(self.pageN,1)
         start  = 1  if num <= 10  else num -5
         end    = 10 if num <= 10  else min( num+10 // 2 , self.pagecount)        

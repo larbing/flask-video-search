@@ -17,6 +17,5 @@ def search():
     keyword = request.args.get('q', '')
     page_num = request.args.get('p', 1)
     service = IndexService()
-    pageMaster = service.search(keyword,page_num=max(int(page_num),1))
-    
-    return render_template('search.html',keyword=keyword,pageMaster=pageMaster)
+    pagination = service.search(keyword,page_num=max(int(page_num),1))
+    return render_template('search.html',keyword=keyword,pagination=pagination)
