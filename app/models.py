@@ -10,11 +10,10 @@ class Pagination(object):
         self.pagecount = pagecount
         self.total     = total 
 
-    def get_pagination(self):
+    def get_pagination_bar(self):
         num = max(self.pageN,1)
         start  = 1  if num <= 10  else num -5
-        end    = min(10 if num <= 10  else num+10 // 2,self.pagecount)
-
+        end    = min(10 if num <= 10  else num+10 // 2 ,self.pagecount)        
         return range(start,end+1)
     
     def get_next_page(self):
