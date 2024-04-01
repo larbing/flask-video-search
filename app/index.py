@@ -1,18 +1,17 @@
 import math
-from flask import Flask,render_template,request,url_for
+from flask import Flask,Blueprint,render_template,request,url_for
 
 from .services import IndexService
 
-app = Flask(__name__)
-            
-__solt__ = [app]
 
-@app.route('/')
+bp = Blueprint("index",__name__)
+
+@bp.route('/')
 def index():
     serice = IndexService()
     return render_template('index.html')
 
-@app.route('/search')
+@bp.route('/search')
 def search():
     keyword = request.args.get('q', '')
     page_num = request.args.get('p', 1)

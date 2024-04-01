@@ -56,19 +56,19 @@
                 <!-- Add more vi        deo search results as needed -->
             </ul>
             <div class="pagination">
-                <!-- <a href="{{ url_for('search',q=keyword,p=1 ) }}">首页</a> -->
+                <!-- <a href="{{ url_for('index.search',q=keyword,p=1 ) }}">首页</a> -->
                 {% if pageMaster.pagecount > 1 %}
-                <a href="{{ url_for('search',q=keyword,p=pageMaster.get_up_page() ) }}">&laquo; 上一页</a>
+                <a href="{{ url_for('index.search',q=keyword,p=pageMaster.get_up_page() ) }}">&laquo; 上一页</a>
                 {% for i in pageMaster.get_pagination_bar() %}
                     {% if pageMaster.is_current_page(i)  %}
                         <a href="#" class="active">{{ i }}</a>
                     {% else %}
-                        <a href="{{  url_for('search',q=keyword,p=i)  }}">{{ i }}</a>
+                        <a href="{{  url_for('index.search',q=keyword,p=i)  }}">{{ i }}</a>
                     {% endif %}
                 {% endfor %}
-                <a href="{{ url_for('search',q=keyword,p=pageMaster.get_next_page() ) }}">下一页 &raquo;</a>
+                <a href="{{ url_for('index.search',q=keyword,p=pageMaster.get_next_page() ) }}">下一页 &raquo;</a>
                 {% endif %}
-                <!-- <a href="{{ url_for('search',q=keyword,p=pageMaster.pagecount ) }}"> 末页</a> -->
+                <!-- <a href="{{ url_for('index.search',q=keyword,p=pageMaster.pagecount ) }}"> 末页</a> -->
             </div>
         </div>
     </div>

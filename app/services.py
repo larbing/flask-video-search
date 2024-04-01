@@ -5,7 +5,7 @@ from whoosh.qparser import QueryParser
 from jieba.analyse import ChineseAnalyzer
 
 from .conf import *
-from . import singleton
+from .utils import singleton
 from .models import Pagination
 
 @singleton
