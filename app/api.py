@@ -10,6 +10,7 @@ def api_hot_video_list():
     json = """
     {
     "code": 0,
+    "msg": "",
     "data": [
         {
 		    "id" : "111111",
@@ -35,6 +36,7 @@ def api_search():
     str = """
     {
     "code": 0,
+    "msg": "",
     "data": [
             {
                     "id" : "111111",
@@ -65,6 +67,7 @@ def api_video_info():
     json = """
     {
     "code": 0,
+    "msg": "",
     "data": {
 		        "id" : "111111",
             "name": "Example Video",
@@ -88,6 +91,7 @@ def api_video_play_urls():
     json = """
         {
             "code": 0,
+            "msg": "",
             "data": [
                 {
                     "第01集": "https://v.cdnlz9.com/share/308a4f1079d3c50653dfeca80d85ea6a"
