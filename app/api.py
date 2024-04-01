@@ -1,4 +1,5 @@
-from flask import Blueprint
+import json
+from flask import Blueprint,jsonify,Response
 
 
 bp = Blueprint('api',__name__, url_prefix='/api')
@@ -11,7 +12,7 @@ def api_hot_video_list():
     "code": 0,
     "data": [
         {
-		        "id" : "111111"
+		    "id" : "111111",
             "name": "Example Video",
             "image_url": "https://example.com/image.jpg",
             "video_type": "Movie",
@@ -31,33 +32,33 @@ def api_hot_video_list():
 
 @bp.route("search",methods=['GET','POST'])
 def api_search():
-    json = """
-{
+    str = """
+    {
     "code": 0,
     "data": [
-        {
-		        "id" : "111111"
-            "name": "Example Video",
-            "image_url": "https://example.com/image.jpg",
-            "video_type": "Movie",
-            "content_type": "Action",
-            "region": "USA",
-            "release_date": "2023",
-            "rating": "8",
-            "plot": "An action-packed adventure.",
-            "cast": "John Doe, Jane Smith",
-            "director": "Director Name",
-            "status": "Updated"
+            {
+                    "id" : "111111",
+                "name": "Example Video",
+                "image_url": "https://example.com/image.jpg",
+                "video_type": "Movie",
+                "content_type": "Action",
+                "region": "USA",
+                "release_date": "2023",
+                "rating": "8",
+                "plot": "An action-packed adventure.",
+                "cast": "John Doe, Jane Smith",
+                "director": "Director Name",
+                "status": "Updated"
+            }
+        ],
+        "page_info": {
+                "page_no": 2,
+                "page_size": 10,
+                "page_total": 13
         }
-    ],
-     "page_info": {
-		    "page_no": 2,
-		    "page_size": 10,
-			  "page_total": 13,
-     }
-}
-"""
-    return json
+    }
+    """
+    return str
 
 @bp.route("video_info",methods=['GET','POST'])
 def api_video_info():
@@ -65,7 +66,7 @@ def api_video_info():
     {
     "code": 0,
     "data": {
-		        "id" : "111111"
+		        "id" : "111111",
             "name": "Example Video",
             "image_url": "https://example.com/image.jpg",
             "video_type": "Movie",
