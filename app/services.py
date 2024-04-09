@@ -43,8 +43,7 @@ class DBService:
         self.db = TinyDB(DBDIR)
 
     def get_info_by_name(self,name):
-        resutls = self.db.search(Query().name == name)
-        return resutls[0] if len(resutls) > 0 else None
+        return self.db.search(Query().name == name)
         
     def get_info_by_id(self,id):
         resutls = self.db.search(Query().id == id)
