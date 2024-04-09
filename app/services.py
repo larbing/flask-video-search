@@ -2,8 +2,9 @@ from whoosh.index import create_in , open_dir
 from whoosh.fields import *
 from whoosh.writing import BufferedWriter
 from whoosh.qparser import QueryParser
-from tinydb import TinyDB,Query
 from jieba.analyse import ChineseAnalyzer
+
+from tinydb import TinyDB,Query
 
 from .conf import *
 from .utils import singleton
