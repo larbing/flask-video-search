@@ -2,6 +2,8 @@ from whoosh.index import create_in , open_dir
 from whoosh.fields import *
 from whoosh.writing import BufferedWriter
 from whoosh.qparser import QueryParser
+from whoosh.query import And
+
 from jieba.analyse import ChineseAnalyzer
 
 from tinydb import TinyDB,Query
@@ -9,20 +11,24 @@ from tinydb import TinyDB,Query
 from .conf import *
 from .utils import singleton
 from .models import Pagination
+from .requests import SearchRequest
 
 @singleton
 class IndexService:
 
     def __init__(self) -> None:
-        self.analyzer = ChineseAnalyzer()
+        analyzer = ChineseAnalyzer()
         self.schema = Schema(
-            id=ID(stored=True),
-            title=TEXT(stored=True,analyzer=self.analyzer), 
-            content=TEXT(analyzer=self.analyzer),
-            url=STORED,
-            region=KEYWORD(analyzer=self.analyzer),
-            category=KEYWORD(analyzer=self.analyzer),
-            update_context=KEYWORD(analyzer=self.analyzer)
+            id=ID(stored=True,unique=True),
+            name=TEXT(stored=True,analyzer=analyzer), 
+            image_url=STORED,
+            region=KEYWORD(stored=True,analyzer=analyzer),
+            content_type=KEYWORD(stored=True,analyzer=analyzer),
+            language=KEYWORD(stored=True,analyzer=analyzer),
+            release_date=KEYWORD(stored=True),
+            rating=KEYWORD(stored=True),
+            updated=KEYWORD(stored=True),
+            status=STORED
         )
         self.ix = open_dir(indexdir,schema=self.schema)
         
@@ -35,6 +41,25 @@ class IndexService:
             fields = [ result.fields() for result in results]
             pagination = Pagination(fields,page_num,page_size,results.pagecount,results.total)
             
+            return pagination
+        
+    def searchByRequest(self,request:SearchRequest) -> Pagination:
+        querys = []
+        if request.name:
+            querys.append(QueryParser("name", self.ix.schema).parse(request.name))
+        if request.region:
+            querys.append(QueryParser("region", self.ix.schema).parse(request.region))
+        if request.content_type:
+            querys.append(QueryParser("content_type", self.ix.schema).parse(request.content_type))
+        if request.language:
+            querys.append(QueryParser("language", self.ix.schema).parse(request.language))
+        if request.release_date:
+            querys.append(QueryParser("release_date", self.ix.schema).parse(request.release_date))
+
+        with self.ix.searcher() as searcher:
+            results = searcher.search_page(And(querys),pagenum=request.pageNo,pagelen=request.pageSize)
+            fields = [ result.fields() for result in results]
+            pagination = Pagination(fields,request.pageNo,request.pageSize,results.pagecount,results.total)
             return pagination
 
 @singleton              

@@ -4,6 +4,6 @@ import requests
 
 
 if __name__ == "__main__":
-    url = "http://127.0.0.1:5000/api/video_play_urls"
-    r = requests.post(url,data={"id":"512168fde4ac3c38eedfc9a42eeef3e4","page_no":"3"})
+    url = "http://127.0.0.1:5000/api/search"
+    r = requests.post(url,data={"region":"日本","name":"小红帽恰恰","page_no":1})
     print(r.text)

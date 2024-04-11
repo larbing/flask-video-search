@@ -30,3 +30,10 @@ class Pagination(object):
     
     def __next__(self):
         return self.resutls.__next__()
+    
+    @property
+    def pageInfo(self):
+        return {"page_info":{"page_no":self.pageN,
+                        "page_size":self.pageSize,
+                        "page_total":self.pagecount}}
+        
