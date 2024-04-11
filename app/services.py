@@ -43,7 +43,9 @@ class IndexService:
             
             return pagination
     
-    """
+
+    def searchByRequest(self,request:SearchRequest) -> Pagination:
+        """
         A function to search based on the given SearchRequest object and return a Pagination object.
         
         Parameters:
@@ -51,8 +53,7 @@ class IndexService:
         
         Returns:
             Pagination: A Pagination object containing the search results.
-    """
-    def searchByRequest(self,request:SearchRequest) -> Pagination:
+        """
         querys = []
         if request.name:
             querys.append(QueryParser("name", self.ix.schema).parse(request.name))
