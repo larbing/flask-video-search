@@ -1,8 +1,10 @@
+from functools import cache
+import requests
 from whoosh.index import create_in , open_dir
 from whoosh.fields import *
 from whoosh.writing import BufferedWriter
 from whoosh.qparser import QueryParser
-from whoosh.query import And
+from whoosh.query import And,Or
 
 from jieba.analyse import ChineseAnalyzer
 
@@ -21,6 +23,7 @@ class IndexService:
         self.schema = Schema(
             id=ID(stored=True,unique=True),
             name=TEXT(stored=True,analyzer=analyzer), 
+            title=TEXT(stored=True), 
             image_url=STORED,
             region=KEYWORD(stored=True,analyzer=analyzer),
             content_type=KEYWORD(stored=True,analyzer=analyzer),
@@ -43,8 +46,26 @@ class IndexService:
             
             return pagination
     
+    def search_titles(self,titles:list) -> Pagination:
+        """
+        A function to search based on a list of names and return a Pagination object.
+        
+        Parameters:
+            names (list): A list of names to search for.
+        
+        Returns:
+            Pagination: A Pagination object containing the search results.
+        """
+        with self.ix.searcher() as searcher:
+            page_size = len(titles)
+            query = QueryParser("title", self.ix.schema)
+            queryParsers = [query.parse(title) for title in titles]
+            results = searcher.search_page(Or(queryParsers),1,page_size)
+            fields = [ result.fields() for result in results]
+            pagination = Pagination(fields,1,page_size,results.pagecount,results.total)
+            return pagination
 
-    def searchByRequest(self,request:SearchRequest) -> Pagination:
+    def search_request(self,request:SearchRequest) -> Pagination:
         """
         A function to search based on the given SearchRequest object and return a Pagination object.
         
@@ -84,3 +105,17 @@ class DBService:
     def get_info_by_id(self,id):
         resutls = self.db.search(Query().id == id)
         return resutls[0] if len(resutls) > 0 else None
+
+class DoubanService:
+
+    @staticmethod
+    @cache
+    def search_subjects(type,page_limit=20,page_start=0):
+        url = f"https://movie.douban.com/j/search_subjects?type={type}&tag=%E7%83%AD%E9%97%A8&page_limit={page_limit}&page_start={page_start}"
+        r = requests.get(url,headers={"User-Agent":"Mozilla/5.0"})
+        resutls = r.json()
+        titls = ()
+        for result in resutls["subjects"]:
+            titls += (result["title"],)
+        return titls
+        

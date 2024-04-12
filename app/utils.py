@@ -36,3 +36,10 @@ def getInt(values,key,default=0):
         return max(int(value),default)
     except:
         return default
+
+def getString(values,key,default=None):
+    value = values.get(key)
+    try: 
+        return str(value)
+    except:
+        return default

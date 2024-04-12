@@ -3,7 +3,7 @@ import math
 from flask import Blueprint,jsonify,Response,request
 
 from .services import * 
-from .utils import error_response,success_response,getInt
+from .utils import error_response,success_response,getInt,getString
 from .requests import SearchRequest
 
 bp = Blueprint('api',__name__, url_prefix='/api')
@@ -11,36 +11,17 @@ bp = Blueprint('api',__name__, url_prefix='/api')
 dBService = DBService()
 indexService = IndexService()
 
-@bp.route("/hot_video_list")
+@bp.post("/hot_video_list")
 def api_hot_video_list():
-    json = """
-    {
-    "code": 0,
-    "msg": "",
-    "data": [
-        {
-		    "id" : "111111",
-            "name": "Example Video",
-            "image_url": "https://example.com/image.jpg",
-            "video_type": "Movie",
-            "content_type": "Action",
-            "region": "USA",
-            "release_date": "2023",
-            "rating": "8",
-            "plot": "An action-packed adventure.",
-            "cast": "John Doe, Jane Smith",
-            "director": "Director Name",
-            "status": "Updated"
-        }
-    ]
-}
-""" 
-    return json
+    type = getString(request.form,'type',"tv")
+    titles = DoubanService.search_subjects(type,page_limit=20)
+    pagination = indexService.search_titles(titles)
+    return success_response(pagination.resutls)
 
 @bp.post("/search")
 def api_search():
     req = SearchRequest(**request.form)
-    pagination = indexService.searchByRequest(req)
+    pagination = indexService.search_request(req)
     return success_response(pagination.resutls,pagination.pageInfo)
 
 @bp.post("/video_info")
