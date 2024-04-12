@@ -48,13 +48,13 @@ class IndexService:
     
     def search_by_titles(self,titles:list) -> Pagination:
         """
-        A function to search based on a list of names and return a Pagination object.
+        Search and retrieve paginated results by titles.
         
-        Parameters:
-            names (list): A list of names to search for.
+        Args:
+            titles (list): A list of titles to search for.
         
         Returns:
-            Pagination: A Pagination object containing the search results.
+            Pagination: An object containing paginated search results.
         """
         with self.ix.searcher() as searcher:
             page_size = len(titles)
@@ -111,6 +111,17 @@ class DoubanService:
     @staticmethod
     @cache
     def search_subjects(type,page_limit=20,page_start=0):
+        """
+        A static method to search for subjects with the given type, page limit, and page start.
+        
+        Parameters:
+            type (str): The type of subjects to search for.
+            page_limit (int): The maximum number of subjects to retrieve in one request. Default is 20.
+            page_start (int): The starting index of the subjects to retrieve. Default is 0.
+            
+        Returns:
+            tuple: A tuple containing the titles of the retrieved subjects.
+        """
         url = f"https://movie.douban.com/j/search_subjects?type={type}&tag=%E7%83%AD%E9%97%A8&page_limit={page_limit}&page_start={page_start}"
         r = requests.get(url,headers={"User-Agent":"Mozilla/5.0"})
         resutls = r.json()
