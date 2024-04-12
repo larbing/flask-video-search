@@ -46,7 +46,7 @@ class IndexService:
             
             return pagination
     
-    def search_titles(self,titles:list) -> Pagination:
+    def search_by_titles(self,titles:list) -> Pagination:
         """
         A function to search based on a list of names and return a Pagination object.
         
@@ -65,7 +65,7 @@ class IndexService:
             pagination = Pagination(fields,1,page_size,results.pagecount,results.total)
             return pagination
 
-    def search_request(self,request:SearchRequest) -> Pagination:
+    def search_by_request(self,request:SearchRequest) -> Pagination:
         """
         A function to search based on the given SearchRequest object and return a Pagination object.
         
