@@ -14,7 +14,7 @@ indexService = IndexService()
 @bp.post("/hot_video_list")
 def api_hot_video_list():
     type = getString(request.form,'type',"tv")
-    titles = DoubanService.search_subjects(type,page_limit=20)
+    titles = DoubanService.get_hot_video_titles(type,page_limit=20)
     pagination = indexService.search_by_titles(titles)
     return success_response(pagination.resutls)
 

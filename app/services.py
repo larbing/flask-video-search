@@ -110,7 +110,7 @@ class DoubanService:
 
     @staticmethod
     @cache
-    def search_subjects(type,page_limit=20,page_start=0):
+    def get_hot_video_titles(type,page_limit=20,page_start=0):
         """
         A static method to search for subjects with the given type, page limit, and page start.
         

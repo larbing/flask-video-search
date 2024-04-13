@@ -38,18 +38,20 @@
             <h2>Search Results for "{{ keyword }}"</h2>
             <ul>
                 {% for item in pageMaster %}
+                {% set video_info = get_info_by_id(item['id']) %}
                 <li>
-                    <!-- <img src="video-thumbnail-1.jpg" alt="Video Thumbnail"> -->
+                    <img src="{{ item['image_url'] }}" alt="Video Thumbnail">
                     <div>
                         <a href="{{  item['url'] }}">
                             <div class="title">{{ item['title'] }}</div>
-                            <div class="snippet">This is the first episode of the video series.</div>
+                            <div class="snippet">{{ video_info['plot'] }}</div>
                         </a>
-                        <!-- <div class="episode-nav">
-                            <a href="video-episode-1.html">Episode 1</a>
-                            <a href="video-episode-2.html">Episode 2</a>
-                            <a href="video-episode-3.html">Episode 3</a>
-                        </div> -->
+                        <div class="episode-nav">
+                            {% set size = video_info['links'] | length %}
+                            {% for link in video_info['links'][-1:size-4:-1] %}
+                                <a href="{{ link.split('$')[1] }}">{{ link.split('$')[0] }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </li>
                 {% endfor %}

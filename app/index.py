@@ -1,10 +1,15 @@
 import math
 from flask import Flask,Blueprint,render_template,request,url_for
 
-from .services import IndexService
+from .services import *
+from .utils import getInt
+from .requests import SearchRequest
 
 
 bp = Blueprint("index",__name__)
+
+indexService = IndexService()
+dbService = DBService()
 
 @bp.route('/')
 def index():
@@ -14,7 +19,10 @@ def index():
 @bp.route('/search')
 def search():
     keyword = request.args.get('q', '')
-    page_num = request.args.get('p', 1)
-    service = IndexService()
-    pagination = service.search(keyword,page_num=max(int(page_num),1))
-    return render_template('search.html',keyword=keyword,pageMaster=pagination,url_for=url_for)
+    page_num = getInt(request.args,'p',1)
+    req = SearchRequest(name=keyword)
+    pagination = indexService.search_by_request(req)
+    return render_template('search.html',keyword=keyword,
+                           pageMaster=pagination,
+                           url_for=url_for,
+                           get_info_by_id=dbService.get_info_by_id)
