@@ -28,7 +28,7 @@ def api_search():
 def api_video_info():
     id = request.form.get('id')
     if not id:
-        return error_response("id is required")
+        return error_response("id is required")#
     
     video_info = dBService.get_info_by_id(id)
     if not video_info:

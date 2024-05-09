@@ -24,11 +24,11 @@ def singleton(cls):
 
     return get_instance
 
-def error_response(msg,code=1):
-    return jsonify({"code":code,"msg":msg})
+def error_response(msg,code=1,extra={}):
+    return jsonify({"code":code,"msg":msg,**extra})
 
 def success_response(data,extra={}):
-    return jsonify({"code":0,"msg":"","data":data,**extra})
+    return jsonify({"code":0,"msg":"ok","data":data,**extra})
 
 def getInt(values,key,default=0):
     value = values.get(key)

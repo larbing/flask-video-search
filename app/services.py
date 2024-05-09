@@ -11,6 +11,7 @@ from jieba.analyse import ChineseAnalyzer
 from tinydb import TinyDB,Query
 
 from .conf import *
+from .settings import channel_settings
 from .utils import singleton
 from .models import Pagination
 from .requests import SearchRequest
@@ -22,6 +23,7 @@ class IndexService:
         analyzer = ChineseAnalyzer()
         self.schema = Schema(
             id=ID(stored=True,unique=True),
+            vid=ID(stored=True),
             name=TEXT(stored=True,analyzer=analyzer), 
             title=TEXT(stored=True), 
             image_url=STORED,
@@ -37,7 +39,7 @@ class IndexService:
         
 
     def search(self,keyword:str,page_num:int=1,page_size:int=10) -> Pagination:
-        qp = QueryParser("category", self.ix.schema)
+        qp = QueryParser("name", self.ix.schema)
         with self.ix.searcher() as searcher:
             query = qp.parse(keyword)
             results = searcher.search_page(query,pagenum=page_num,pagelen=page_size)
@@ -105,6 +107,10 @@ class DBService:
     def get_info_by_id(self,id):
         resutls = self.db.search(Query().id == id)
         return resutls[0] if len(resutls) > 0 else None
+    
+    def get_info_by_vid(self,vid):
+        resutls = self.db.search(Query().vid == vid)
+        return resutls[0] if len(resutls) > 0 else None
 
 class DoubanService:
 
@@ -129,4 +135,27 @@ class DoubanService:
         for result in resutls["subjects"]:
             titls += (result["title"],)
         return titls
-        
+
+@singleton    
+class ChannelSettingsService:
+    def __init__(self, settings=channel_settings):
+        self.settings = settings
+
+    def find_lists_by_pid(self, t_pid):
+        result = []
+        for type_info in self.settings:
+            if type_info['t_pid'] == t_pid:
+                result.append(type_info)
+        return result
+    
+    def find_name_by_id(self, t_id):
+        for type_info in self.settings:
+            if type_info['t_id'] == t_id:
+                return type_info['t_name']
+        return None
+
+    def find_id_by_name(self, name):
+        for type_info in self.settings:
+            if type_info['t_name'] == name:
+                return str(type_info['t_id'])
+        return None
