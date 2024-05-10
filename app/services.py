@@ -20,22 +20,7 @@ from .requests import SearchRequest
 class IndexService:
 
     def __init__(self) -> None:
-        analyzer = ChineseAnalyzer()
-        self.schema = Schema(
-            id=ID(stored=True,unique=True),
-            vid=ID(stored=True),
-            name=TEXT(stored=True,analyzer=analyzer), 
-            title=TEXT(stored=True), 
-            image_url=STORED,
-            region=KEYWORD(stored=True,analyzer=analyzer),
-            content_type=KEYWORD(stored=True,analyzer=analyzer),
-            language=KEYWORD(stored=True,analyzer=analyzer),
-            release_date=KEYWORD(stored=True),
-            rating=KEYWORD(stored=True),
-            updated=KEYWORD(stored=True),
-            status=STORED
-        )
-        self.ix = open_dir(indexdir,schema=self.schema)
+        self.ix = open_dir(INDEXDIR)
         
 
     def search(self,keyword:str,page_num:int=1,page_size:int=10) -> Pagination:
@@ -90,7 +75,8 @@ class IndexService:
             querys.append(QueryParser("release_date", self.ix.schema).parse(request.release_date))
 
         with self.ix.searcher() as searcher:
-            results = searcher.search_page(And(querys),pagenum=request.pageNo,pagelen=request.pageSize)
+            results = searcher.search_page(And(querys),sortedby="release_date",reverse=True
+                                           ,pagenum=request.pageNo,pagelen=request.pageSize)
             fields = [ result.fields() for result in results]
             pagination = Pagination(fields,request.pageNo,request.pageSize,results.pagecount,results.total)
             return pagination
