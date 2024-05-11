@@ -86,7 +86,7 @@ class IndexService:
 class DBService:
 
     def __init__(self) -> None:
-        self.db = pickledb.load(DBDIR,False)
+        self.db = pickledb.load(DBDIR,True)
         
     def get_info_by_id(self,id):
         return self.db.get(id)

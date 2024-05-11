@@ -48,8 +48,8 @@
                         </a>
                         <div class="episode-nav">
                             {% set size = video_info['links'] | length %}
-                            {% for link in video_info['links'][-1:size-4:-1] %}
-                                <a href="{{ link.split('$')[1] }}">{{ link.split('$')[0] }}</a>
+                            {% for link in video_info['links'] %}
+                                <a href="{{ link.split('$')[1] }}" target="_blank" >{{ link.split('$')[0] }}</a>
                             {% endfor %}
                         </div>
                     </div>

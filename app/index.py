@@ -19,8 +19,8 @@ def index():
 @bp.route('/search')
 def search():
     keyword = request.args.get('q', '')
-    page_num = getInt(request.args,'p',1)
-    req = SearchRequest(name=keyword)
+    pageNo = getInt(request.args,'p',1)
+    req = SearchRequest(name=keyword,page_no=pageNo)
     pagination = indexService.search_by_request(req)
     return render_template('search.html',keyword=keyword,
                            pageMaster=pagination,
