@@ -8,7 +8,8 @@ from whoosh.query import And,Or
 
 from jieba.analyse import ChineseAnalyzer
 
-from tinydb import TinyDB,Query
+
+import pickledb
 
 from .conf import *
 from .settings import channel_settings
@@ -85,18 +86,14 @@ class IndexService:
 class DBService:
 
     def __init__(self) -> None:
-        self.db = TinyDB(DBDIR)
-
-    def get_info_by_name(self,name):
-        return self.db.search(Query().name == name)
+        self.db = pickledb.load(DBDIR,False)
         
     def get_info_by_id(self,id):
-        resutls = self.db.search(Query().id == id)
-        return resutls[0] if len(resutls) > 0 else None
+        return self.db.get(id)
     
     def get_info_by_vid(self,vid):
-        resutls = self.db.search(Query().vid == vid)
-        return resutls[0] if len(resutls) > 0 else None
+        id = self.db.get(vid)
+        return self.get_info_by_id(id) if id else None
 
 class DoubanService:
 
