@@ -96,7 +96,7 @@ class DBService:
         return self.get_info_by_id(id) if id else None
 
     def reload(self):
-        self.db = pickledb.load(DBDIR,False)
+        self.db.load(DBDIR,False)
 
 class DoubanService:
 
