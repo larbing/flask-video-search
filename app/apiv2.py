@@ -9,7 +9,7 @@ from .requests import SearchRequest
 bp = Blueprint('apiv2',__name__, url_prefix='/apiv2')
 
 indexService           = IndexService()
-bBService              = DBService()
+dbService              = DBService()
 channelSettingsService = ChannelSettingsService()
 
 @bp.get("/getType")
@@ -46,14 +46,15 @@ def api_get_vod_by_pid():
 
 @bp.get("/reload")
 def api_reload():
-    bBService.reload()
+    dbService.reload()
     return "ok"
 
 @bp.get("/getVodById")
 def api_get_vod_by_vid():
     vid = getString(request.args,'d_id')
-    info = bBService.get_info_by_vid(vid)
+    info = dbService.get_info_by_vid(vid)
     if info is None:
+        dbService.reload()
         return error_response('视频不存在',{'ret':0,'msg':'视频不存在'})
     
     res = dict()
