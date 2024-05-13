@@ -86,7 +86,7 @@ class IndexService:
 class DBService:
 
     def __init__(self) -> None:
-        self.db = pickledb.load(DBDIR,True)
+        self.db = pickledb.load(DBDIR,False)
         
     def get_info_by_id(self,id):
         return self.db.get(id)
@@ -94,6 +94,9 @@ class DBService:
     def get_info_by_vid(self,vid):
         id = self.db.get(vid)
         return self.get_info_by_id(id) if id else None
+
+    def reload(self):
+        self.db = pickledb.load(DBDIR,False)
 
 class DoubanService:
 

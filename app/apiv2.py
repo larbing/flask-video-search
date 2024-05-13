@@ -44,6 +44,11 @@ def api_get_vod_with_page():
 def api_get_vod_by_pid():
     pass
 
+@bp.get("/reload")
+def api_reload():
+    bBService.reload()
+    return "ok"
+
 @bp.get("/getVodById")
 def api_get_vod_by_vid():
     vid = getString(request.args,'d_id')
