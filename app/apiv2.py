@@ -54,7 +54,6 @@ def api_get_vod_by_vid():
     vid = getString(request.args,'d_id')
     info = dbService.get_info_by_vid(vid)
     if info is None:
-        dbService.reload()
         return error_response('视频不存在',{'ret':0,'msg':'视频不存在'})
     
     res = dict()

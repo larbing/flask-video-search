@@ -1,0 +1,10 @@
+version: '3.0'
+services:
+  flask-video-search:
+    image: abc7223/flask-video-search  # 使用的镜像
+    container_name: flask-video-search  # 容器名称
+    ports:
+      - "80:80"  # 端口映射
+    volumes:
+      - /data:/data  # 卷映射
+    restart: unless-stopped  # 重启策略
