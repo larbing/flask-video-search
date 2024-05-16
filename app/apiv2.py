@@ -42,7 +42,26 @@ def api_get_vod_with_page():
 
 @bp.get("/getVodByPid")
 def api_get_vod_by_pid():
-    pass
+    pid         = getInt(request.args,'pid',1)
+    page_size   = getInt(request.args,'pageSize',20)
+    page_start  = getInt(request.args,'page',0) * page_size
+    types = ('movie','movie','tv','movie','movie')
+    type =  types[pid]
+    titles = DoubanService.get_hot_video_titles(type,page_limit=20,page_start=page_start)
+    page = indexService.search_by_titles(titles)
+
+    res = list()
+    for p in page.resutls:
+        item = dict()
+        item['d_id'] = int(p.get('vid'))
+        item['d_name'] = p.get('name')
+        item['d_pic'] = p.get('image_url')
+        item['d_type'] = str("10")
+        item['d_remarks'] = p.get('status')
+        item['d_score']= p.get('rating')
+        res.append(item)
+
+    return success_response(json.dumps(res),{'ret': 1,'total': page.total})
 
 @bp.get("/reload")
 def api_reload():
@@ -54,7 +73,6 @@ def api_get_vod_by_vid():
     vid = getString(request.args,'d_id')
     info = dbService.get_info_by_vid(vid)
     if info is None:
-        dbService.reload()
         return error_response('视频不存在',{'ret':0,'msg':'视频不存在'})
     
     res = dict()
