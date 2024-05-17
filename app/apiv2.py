@@ -20,6 +20,9 @@ def page_response(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         page = func(*args, **kwargs)
+        if not isinstance(page,Pagination):
+            return page
+        
         res = list()
         for p in page.resutls:
             item = dict()
