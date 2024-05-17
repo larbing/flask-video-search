@@ -22,8 +22,10 @@ class IndexService:
 
     def __init__(self) -> None:
         self.ix = open_dir(INDEXDIR)
-        
 
+    def reload(self):
+        self.ix.refresh()
+        
     def search(self,keyword:str,page_num:int=1,page_size:int=10) -> Pagination:
         qp = QueryParser("name", self.ix.schema)
         with self.ix.searcher() as searcher:

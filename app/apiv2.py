@@ -65,6 +65,7 @@ def api_get_vod_by_pid():
 
 @bp.get("/reload")
 def api_reload():
+    indexService.reload()
     dbService.reload()
     return "ok"
 
