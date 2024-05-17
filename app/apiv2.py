@@ -1,5 +1,7 @@
 import json
 import math
+
+from functools import wraps
 from flask import Blueprint,jsonify,Response,request
 
 from .services import * 
@@ -11,6 +13,25 @@ bp = Blueprint('apiv2',__name__, url_prefix='/apiv2')
 indexService           = IndexService()
 dbService              = DBService()
 channelSettingsService = ChannelSettingsService()
+
+
+def page_response(func):
+    
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        page = func(*args, **kwargs)
+        res = list()
+        for p in page.resutls:
+            item = dict()
+            item['d_id'] = int(p.get('vid'))
+            item['d_name'] = p.get('name')
+            item['d_pic'] = p.get('image_url')
+            item['d_remarks'] = p.get('status')
+            item['d_score']= p.get('rating')
+            res.append(item)
+
+        return success_response(json.dumps(res),{'ret': 1,'total': page.total})
+    return wrapper
 
 @bp.get("/getType")
 def api_get_type():
@@ -41,6 +62,7 @@ def api_get_vod_with_page():
     return success_response(json.dumps(res),{'ret': 1,'total': page.total})
 
 @bp.get("/getVodByPid")
+@page_response
 def api_get_vod_by_pid():
     pid         = getInt(request.args,'pid',1)
     page_size   = getInt(request.args,'pageSize',20)
@@ -48,20 +70,7 @@ def api_get_vod_by_pid():
     types = ('movie','movie','tv','movie','movie')
     type =  types[pid]
     titles = DoubanService.get_hot_video_titles(type,page_limit=20,page_start=page_start)
-    page = indexService.search_by_titles(titles)
-
-    res = list()
-    for p in page.resutls:
-        item = dict()
-        item['d_id'] = int(p.get('vid'))
-        item['d_name'] = p.get('name')
-        item['d_pic'] = p.get('image_url')
-        item['d_type'] = str("10")
-        item['d_remarks'] = p.get('status')
-        item['d_score']= p.get('rating')
-        res.append(item)
-
-    return success_response(json.dumps(res),{'ret': 1,'total': page.total})
+    return indexService.search_by_titles(titles)
 
 @bp.get("/reload")
 def api_reload():
@@ -97,20 +106,20 @@ def api_search():
     return request.args.get('q')
 
 @bp.post("/searchForHanZi")
+@page_response
 def api_search_for_hanzi():
     keys= request.form.get('keys')
-    page = indexService.search(keys)
-    res = list()
-    for p in page.resutls:
-        item = dict()
-        item['d_id'] = int(p.get('vid'))
-        item['d_name'] = p.get('name')
-        item['d_pic'] = p.get('image_url')
-        item['d_remarks'] = p.get('status')
-        item['d_score']= p.get('rating')
-        res.append(item)
+    return indexService.search(keys)
 
-    return success_response(json.dumps(res),{'ret': 1,'total': page.total})
+@bp.get("/getTodayUp")
+@page_response
+def get_today_update():
+    req = SearchRequest()
+    req.content_type = channelSettingsService.find_name_by_id(100)
+    req.page_size = getInt(request.args,'pageSize')
+    req.page_no   = getInt(request.args,'page') + 1
+
+    return indexService.search_by_request(req,sort_by="updated")
 
 @bp.get("/getHome")
 def api_get_home():

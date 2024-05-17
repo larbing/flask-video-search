@@ -55,7 +55,7 @@ class IndexService:
             pagination = Pagination(fields,1,page_size,results.pagecount,results.total)
             return pagination
 
-    def search_by_request(self,request:SearchRequest) -> Pagination:
+    def search_by_request(self,request:SearchRequest,sort_by="release_date") -> Pagination:
         """
         A function to search based on the given SearchRequest object and return a Pagination object.
         
@@ -78,7 +78,7 @@ class IndexService:
             querys.append(QueryParser("release_date", self.ix.schema).parse(request.release_date))
 
         with self.ix.searcher() as searcher:
-            results = searcher.search_page(And(querys),sortedby="release_date",reverse=True
+            results = searcher.search_page(And(querys),sortedby=sort_by,reverse=True
                                            ,pagenum=request.pageNo,pagelen=request.pageSize)
             fields = [ result.fields() for result in results]
             pagination = Pagination(fields,request.pageNo,request.pageSize,results.pagecount,results.total)
