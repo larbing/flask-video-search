@@ -7,6 +7,7 @@ RUN pip install -r requirements.txt
 
 # RUN mkdir -p /data/app/indexdir
 # RUN touch /data/app/db.json
+ENV TZ 'Asia/Shanghai'
 
 COPY . .
 
