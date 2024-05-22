@@ -51,8 +51,9 @@ def api_get_vod_with_page():
     req.page_no   = getInt(request.args,'page') + 1
 
     page = indexService.search_by_request(req)
+    resutls = sorted(page.resutls,key=lambda x:int(x.get('vid')),reverse=True)
     res = list()
-    for p in page.resutls:
+    for p in resutls:
         item = dict()
         item['d_id'] = int(p.get('vid'))
         item['d_name'] = p.get('name')
@@ -122,7 +123,7 @@ def get_today_update():
     req.page_size = getInt(request.args,'pageSize')
     req.page_no   = getInt(request.args,'page') + 1
 
-    return indexService.search_by_request(req,sort_by="updated")
+    return indexService.search_by_request(req,sort_by="vid")
 
 @bp.get("/getHome")
 def api_get_home():
