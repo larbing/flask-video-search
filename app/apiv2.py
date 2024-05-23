@@ -48,7 +48,7 @@ def api_get_vod_with_page():
     req = SearchRequest()
     t_id = getInt(request.args,'d_type',10)
     req.content_type = channelSettingsService.find_name_by_id(t_id)
-    req.page_size = 50
+    req.page_size = 150
     req.page_no   = getInt(request.args,'page') + 1
 
     page = indexService.search_by_request(req)
