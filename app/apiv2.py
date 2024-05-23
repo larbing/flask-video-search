@@ -123,7 +123,9 @@ def get_today_update():
     req.page_size = 150
     req.page_no   = getInt(request.args,'page') + 1
 
-    return indexService.search_by_request(req,sort_by="vid")
+    page =  indexService.search_by_request(req,sort_by="vid")
+    page.resutls = sorted(page.resutls,key=lambda x:int(x.get('release_date')),reverse=True)
+    return page
 
 @bp.get("/getHome")
 def api_get_home():
