@@ -121,7 +121,7 @@ def api_search_for_hanzi():
 def get_today_update():
     req = SearchRequest()
     req.content_type = channelSettingsService.find_name_by_id(100)
-    req.page_size = 150
+    req.page_size = 50
     req.page_no   = getInt(request.args,'page') + 1
 
     page =  indexService.search_by_request(req,sort_by="updated")
