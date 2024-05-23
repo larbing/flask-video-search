@@ -52,7 +52,7 @@ def api_get_vod_with_page():
     req.page_no   = getInt(request.args,'page') + 1
 
     page = indexService.search_by_request(req)
-    resutls = sorted(page.resutls,key=lambda x:int(x.get('vid')),reverse=True)
+    resutls = sorted(page.resutls,key=lambda x:x.get('updated'),reverse=True)
     res = list()
     for p in resutls:
         item = dict()
