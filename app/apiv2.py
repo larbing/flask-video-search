@@ -31,6 +31,7 @@ def page_response(func):
             item['d_pic'] = p.get('image_url')
             item['d_remarks'] = p.get('status')
             item['d_score']= p.get('rating')
+            item['updated'] = p.get('updated')
             res.append(item)
 
         return success_response(json.dumps(res),{'ret': 1,'total': page.total})
@@ -123,8 +124,8 @@ def get_today_update():
     req.page_size = 150
     req.page_no   = getInt(request.args,'page') + 1
 
-    page =  indexService.search_by_request(req,sort_by="vid")
-    page.resutls = sorted(page.resutls,key=lambda x:int(x.get('release_date')),reverse=True)
+    page =  indexService.search_by_request(req,sort_by="updated")
+    page.resutls = sorted(page.resutls,key=lambda x:x.get('release_date'),reverse=True)
     return page
 
 @bp.get("/getHome")
