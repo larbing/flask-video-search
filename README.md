@@ -13,3 +13,6 @@ docker run -d --rm -p 80:80 \
             --name {IMAGE_NAME} \
             {USER_NAME}/{IMAGE_NAME}"
 ~~~
+
+### 数据包下载地址
+[下载页面](https://github.com/larbing/flask-video-search/releases/tag/v1)
