@@ -6,6 +6,8 @@
 ## docker运行
 
 ~~~
+先下载解压数据包到 /data 目录下
+
 docker run -d --rm -p 80:80 \
             -v /data:/data \
             --name {IMAGE_NAME} \
