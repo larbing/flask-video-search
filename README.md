@@ -15,4 +15,4 @@ docker run -d --rm -p 80:80 \
 ~~~
 
 ### 数据包下载地址
-[下载页面](https://github.com/larbing/flask-video-search/releases/tag/v1)
+[下载](https://github.com/larbing/flask-video-search/releases/tag/v1)
