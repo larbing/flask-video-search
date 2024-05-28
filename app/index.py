@@ -18,7 +18,10 @@ def index():
 
 @bp.route('/player_links')
 def links():
-    name = request.args.get('name', '')
+    name = request.args.get('name')
+    if not name:
+        return ""
+    
     req = SearchRequest(name=name,page_size=1)
     pagination = indexService.search_by_request(req)
     if pagination.total < 1:
