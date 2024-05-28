@@ -1,5 +1,5 @@
 import math
-from flask import Flask,Blueprint,render_template,request,url_for
+from flask import Flask,Blueprint,render_template,Response,request,url_for
 
 from .services import *
 from .utils import getInt
@@ -11,6 +11,8 @@ bp = Blueprint("index",__name__)
 indexService = IndexService()
 dbService = DBService()
 
+
+
 @bp.route('/')
 def index():
     serice = IndexService()
@@ -18,6 +20,7 @@ def index():
 
 @bp.route('/player_links')
 def links():
+
     name = request.args.get('name')
     if not name:
         return ""
@@ -29,7 +32,18 @@ def links():
     
     item = pagination.resutls[0]
     video_info = dbService.get_info_by_id(item.get('id'))
-    return render_template('links.html',video_info=video_info)
+    
+    html = render_template('links.html',video_info=video_info)
+    
+    # 创建一个Response对象
+    response = Response(html, content_type='text/html; charset=utf-8')
+    
+    # 设置响应头
+    response.headers['Access-Control-Allow-Origin'] = 'https://movie.douban.com'
+    response.headers['Access-Control-Allow-Methods'] = ' GET, POST, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = ' Content-Type'
+    
+    return response
 
 @bp.route('/search')
 def search():
