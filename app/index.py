@@ -16,6 +16,18 @@ def index():
     serice = IndexService()
     return render_template('index.html')
 
+@bp.route('/player_links')
+def links():
+    name = request.args.get('name', '')
+    req = SearchRequest(name=name,page_size=1)
+    pagination = indexService.search_by_request(req)
+    if pagination.total < 1:
+        return ""
+    
+    item = pagination.resutls[0]
+    video_info = dbService.get_info_by_id(item.get('id'))
+    return render_template('links.html',video_info=video_info)
+
 @bp.route('/search')
 def search():
     keyword = request.args.get('q', '')
