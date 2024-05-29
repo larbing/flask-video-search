@@ -1,4 +1,5 @@
 import threading
+import nltk
 
 from flask import jsonify
 
@@ -43,3 +44,9 @@ def getString(values,key,default=None):
         return str(value)
     except:
         return default
+    
+def string_similarity(str1, str2):
+    distance = nltk.edit_distance(str1, str2)
+    length = max(len(str1), len(str2))
+    similarity = 1 - (distance / length)
+    return similarity

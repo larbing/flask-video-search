@@ -2,7 +2,7 @@ import math
 from flask import Flask,Blueprint,render_template,Response,request,url_for
 
 from .services import *
-from .utils import getInt
+from .utils import getInt,string_similarity
 from .requests import SearchRequest
 
 
@@ -20,17 +20,20 @@ def index():
 
 @bp.route('/player_links')
 def links():
-
     name = request.args.get('name')
     if not name:
         return ""
     
-    req = SearchRequest(name=name,page_size=1)
+    req = SearchRequest(name=name,page_size=5)
     pagination = indexService.search_by_request(req)
     if pagination.total < 1:
         return ""
     
-    item = pagination.resutls[0]
+    resutls = sorted(pagination.resutls,
+                     key=lambda x: string_similarity(x.get('name').strip(),name.strip()),
+                     reverse=True)
+
+    item = resutls[0]
     video_info = dbService.get_info_by_id(item.get('id'))
     
     html = render_template('links.html',video_info=video_info)
@@ -40,7 +43,7 @@ def links():
     
     # 设置响应头
     response.headers['Access-Control-Allow-Origin'] = 'https://movie.douban.com'
-    response.headers['Access-Control-Allow-Methods'] = ' GET, POST, OPTIONS'
+    response.headers['Access-Control-Allow-Methods'] = ' GET'
     response.headers['Access-Control-Allow-Headers'] = ' Content-Type'
     
     return response
@@ -51,6 +54,9 @@ def search():
     pageNo = getInt(request.args,'p',1)
     req = SearchRequest(name=keyword,page_no=pageNo)
     pagination = indexService.search_by_request(req)
+    pagination.resutls = sorted(pagination.resutls,
+                                key=lambda x: string_similarity(x.get('name')
+                               ,keyword),reverse=True)
     return render_template('search.html',keyword=keyword,
                            pageMaster=pagination,
                            url_for=url_for,
