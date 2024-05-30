@@ -18,6 +18,10 @@ def index():
     serice = IndexService()
     return render_template('index.html')
 
+@bp.route('/player')
+def player():
+    return render_template('player.html')
+
 @bp.route('/player_links')
 def links():
     name = request.args.get('name')
