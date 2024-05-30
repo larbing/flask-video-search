@@ -1,3 +1,5 @@
+<div class="episode_list">
 {% for link in video_info['links'] %}
-<a href="https://so.sonainai.com/player?name={{ name }}&index={{ loop.index0 }}" target="_blank" >{{ link.split('$')[0] }}</a>
+    <a href="https://so.sonainai.com/player?name={{ name }}&index={{ loop.index0 }}" target="_blank" >{{ link.split('$')[0] }}</a>
 {% endfor %}
+</div>
