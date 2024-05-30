@@ -110,7 +110,7 @@
     var mp = new MuiPlayer(config);
     var player = new Player(mp);
     player.play({{index}});
-    // mp.openFullScreen();
+    mp.openFullScreen();
 
     mp.on('fullscreen-change', function (event) {
         mp.showRightSidebar('HD');
