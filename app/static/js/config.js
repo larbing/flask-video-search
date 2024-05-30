@@ -2,7 +2,8 @@ var playerConfig = {
     container:'#mui-player',
     title:'Your Title',
     src:'https://muiplayer.js.org/media/media.mp4',
-    poster:'https://muiplayer.oss-cn-shanghai.aliyuncs.com/static/image/poster.jpg',
+    poster:'/static/img/poster.png',
+    autoplay:true,
     videoAttribute:[
         {attrKey:'webkit-playsinline',attrValue:''},
         {attrKey:'playsinline',attrValue:''},

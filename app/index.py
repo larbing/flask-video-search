@@ -20,7 +20,24 @@ def index():
 
 @bp.route('/player')
 def player():
-    return render_template('player.html')
+    name = request.args.get('name')
+    index = getInt(request.args,'index')
+    if not name:
+        return ""
+    
+    req = SearchRequest(name=name,page_size=5)
+    pagination = indexService.search_by_request(req)
+    if pagination.total < 1:
+        return ""
+    
+    resutls = sorted(pagination.resutls,
+                     key=lambda x: string_similarity(x.get('name').strip(),name.strip()),
+                     reverse=True)
+
+    item = resutls[0]
+    video_info = dbService.get_info_by_id(item.get('id'))
+    play_url = video_info.get("m3u8_links")[0].split('$')[1]
+    return render_template('player.html',video_info=video_info, play_url=play_url,title=name,index=index)
 
 @bp.route('/player_links')
 def links():
@@ -40,7 +57,7 @@ def links():
     item = resutls[0]
     video_info = dbService.get_info_by_id(item.get('id'))
     
-    html = render_template('links.html',video_info=video_info)
+    html = render_template('links.html',video_info=video_info,name=name)
     
     # 创建一个Response对象
     response = Response(html, content_type='text/html; charset=utf-8')

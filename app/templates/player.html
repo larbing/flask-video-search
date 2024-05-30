@@ -5,16 +5,15 @@
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>mui-player 使用 hls.js</title>
+    <title>正在播放-{{ title }}</title>
     <link rel="stylesheet" href="/static/css/mui-player.min.css">
     <script src="/static/js/config.js"></script>
     <script src="/static/js/mui-player.min.js"></script>
-    <script src="/static/hls.min.js"></script>
+    <script src="/static/js/hls.min.js"></script>
 </head>
 
-<body>
-    <h3 style="text-align: center;">HLS</h3>
-    <div id="mui-player" style="max-width: 700px;margin: auto">
+<body style="background-color: black;">
+    <div id="mui-player" style="margin: auto;">
         <!-- 自定义头部导航 -->
         <template slot="likeButton">
             <svg t="1607603509184" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -41,27 +40,41 @@
         <!-- 自定义弹出右侧栏窗口 -->
         <template slot="HD">
             <div
-                style="color: white;display: flex;flex-direction: column;align-items: center;justify-content: center;height: 100%;">
-                <p type="toggleHD" style="cursor: pointer">蓝光1080P</p>
-                <p type="toggleHD" style="cursor: pointer">超清</p>
-                <p type="toggleHD" style="cursor: pointer">高清</p>
-                <p type="toggleHD" style="cursor: pointer">标清</p>
-                <p type="toggleHD" style="cursor: pointer">蓝光1080P</p>
-                <p type="toggleHD" style="cursor: pointer">超清</p>
-                <p type="toggleHD" style="cursor: pointer">高清</p>
-                <p type="toggleHD" style="cursor: pointer">标清</p>
-                <p type="toggleHD" style="cursor: pointer">蓝光1080P</p>
-                <p type="toggleHD" style="cursor: pointer">超清</p>
-                <p type="toggleHD" style="cursor: pointer">高清</p>
-                <p type="toggleHD" style="cursor: pointer">标清</p>
+                style="color: white;display: flex;flex-direction: column;align-items: center;justify-content: center;height: auto;">
+                {% for link in video_info['m3u8_links'] %}
+                <p type="toggleHD" style="cursor: pointer" onclick=do_play({{loop.index0}})>{{ link.split('$')[0] }}
+                </p>
+                {% endfor %}
             </div>
         </template>
     </div>
 </body>
 
 <script>
+    class Player {
+        constructor(mp) {
+            this.links = [
+                {% for link in video_info['m3u8_links'] %}
+                { 'name': '{{ link.split('$')[0] }}', 'url': '{{ link.split('$')[1] }}' },
+                {% endfor %}
+            ];
+    this.index = 0;
+    this.mp = mp;
+        }
+
+    play(index) {
+        this.index = Math.max(0, Math.min(this.links.length - 1, index));
+        this.mp.reloadUrl(this.links[this.index].url);
+        this.mp.showToast("播放" + this.links[this.index].name);
+    }
+
+    playNext() {
+        play(this.index + 1)
+    }
+
+    }
+
     var config = window.playerConfig;
-    config.src = 'https://muiplayer.js.org/media/media.m3u8';
     config.parse = {
         type: 'hls',
         loader: Hls,
@@ -69,8 +82,10 @@
             debug: false,
         },
     }
+    config.autoplay = true;
+    config.title = '{{ title }}';
     config.custom = {
-        headControls: [ //自定义播放器头控件列表，参数接受一个数组配置选项，最大可配置对象为5个.
+        headControls: [
             {
                 slot: 'likeButton',
                 click: function (e) {
@@ -78,21 +93,36 @@
                 }
             }
         ],
-        footerControls: [ // 自定义播放器页脚控件列表，参数接受一个数组配置选项，最大可配置对象为5个.
+        footerControls: [
             {
                 slot: 'nextMedia',
                 position: 'left',
                 click: function (e) {
-                    alert('next media...');
+                    // alert('next media...');
                 }
             },
         ],
-        rightSidebar: [ // 自定义播放器弹出右侧栏，参数接受一个配置数组，最大可配置对象为5个
+        rightSidebar: [
             { slot: 'HD', width: '200px' }
         ],
     }
-    console.log(config);
+
     var mp = new MuiPlayer(config);
+    var player = new Player(mp);
+    player.play({{index}});
+    // mp.openFullScreen();
+
+    mp.on('fullscreen-change', function (event) {
+        mp.showRightSidebar('HD');
+    });
+
+
+    function do_play(index) {
+        player.play(index);
+    };
+
+
+
 </script>
 
 </html>

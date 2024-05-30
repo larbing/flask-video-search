@@ -42,14 +42,14 @@
                 <li>
                     <img src="{{ item['image_url'] }}" alt="Video Thumbnail">
                     <div>
-                        <a href="{{  item['url'] }}">
+                        <a href="#">
                             <div class="title">{{ item['title'] }}</div>
                             <div class="snippet">{{ video_info['plot'] }}</div>
                         </a>
                         <div class="episode-nav">
                             {% set size = video_info['links'] | length %}
                             {% for link in video_info['links'] %}
-                                <a href="{{ link.split('$')[1] }}" target="_blank" >{{ link.split('$')[0] }}</a>
+                                <a href="/player?name={{ keyword }}&index={{ loop.index0 }}" target="_blank" >{{ link.split('$')[0] }}</a>
                             {% endfor %}
                         </div>
                     </div>
