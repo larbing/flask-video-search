@@ -65,6 +65,7 @@
         }
 
         config() {
+            var self = this;
             var config = window.playerConfig;
             config.parse = {
                 type: 'hls',
@@ -80,7 +81,7 @@
                     {
                         slot: 'likeButton',
                         click: function (e) {
-                            this.showRightSidebar();
+                            self.showRightSidebar();
                         }
                     }
                 ],
@@ -89,8 +90,7 @@
                         slot: 'nextMedia',
                         position: 'left',
                         click: function (e) {
-                            // alert('next media...');
-                            this.playNext();
+                            self.playNext();
                         }
                     },
                 ],
