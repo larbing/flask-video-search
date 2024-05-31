@@ -42,7 +42,7 @@
             <div
                 style="color: white;display: flex;flex-direction: column;align-items: center;justify-content: center;height: auto;">
                 {% for link in video_info['m3u8_links'] %}
-                <p type="toggleHD" style="cursor: pointer" onclick=do_play({{loop.index0}})>{{ link.split('$')[0] }}
+                <p type="toggleHD" style="cursor: pointer" onclick=player.play({{loop.index0}})>{{ link.split('$')[0] }}
                 </p>
                 {% endfor %}
             </div>
@@ -51,76 +51,86 @@
 </body>
 
 <script>
-    class Player {
-        constructor(mp) {
-            this.links = [
-                {% for link in video_info['m3u8_links'] %}
+
+    var links = [
+        {% for link in video_info['m3u8_links'] %}
                 { 'name': '{{ link.split('$')[0] }}', 'url': '{{ link.split('$')[1] }}' },
-                {% endfor %}
-            ];
-    this.index = 0;
-    this.mp = mp;
+        {% endfor %}
+        ];
+    class Player {
+        constructor(links) {
+            this.mp = new MuiPlayer(this.config());
+            this.links = links
+            this.index = 0;
         }
 
-    play(index) {
-        this.index = Math.max(0, Math.min(this.links.length - 1, index));
-        this.mp.reloadUrl(this.links[this.index].url);
-        this.mp.showToast("播放" + this.links[this.index].name);
-    }
-
-    playNext() {
-        this.play(this.index + 1)
-    }
-
-    }
-
-    var config = window.playerConfig;
-    config.parse = {
-        type: 'hls',
-        loader: Hls,
-        config: {
-            debug: false,
-        },
-    }
-    config.autoplay = true;
-    config.title = '{{ title }}';
-    config.custom = {
-        headControls: [
-            {
-                slot: 'likeButton',
-                click: function (e) {
-                    mp.showRightSidebar('HD');
-                }
+        config() {
+            var config = window.playerConfig;
+            config.parse = {
+                type: 'hls',
+                loader: Hls,
+                config: {
+                    debug: false,
+                },
             }
-        ],
-        footerControls: [
-            {
-                slot: 'nextMedia',
-                position: 'left',
-                click: function (e) {
-                    // alert('next media...');
-                    player.playNext();
-                }
-            },
-        ],
-        rightSidebar: [
-            { slot: 'HD', width: '200px' }
-        ],
+            config.autoplay = true;
+            config.title = '{{ title }}';
+            config.custom = {
+                headControls: [
+                    {
+                        slot: 'likeButton',
+                        click: function (e) {
+                            this.showRightSidebar();
+                        }
+                    }
+                ],
+                footerControls: [
+                    {
+                        slot: 'nextMedia',
+                        position: 'left',
+                        click: function (e) {
+                            // alert('next media...');
+                            this.playNext();
+                        }
+                    },
+                ],
+                rightSidebar: [
+                    { slot: 'HD', width: '200px' }
+                ],
+            }
+            return config;
+        }
+
+        init() {
+            var self = this;
+            self.play({{ index }});
+            self.mp.on('fullscreen-change', function (event) {
+                self.showRightSidebar();
+            });
+            self.mp.openFullScreen();
+
+        }
+
+        showRightSidebar() {
+            this.mp.showRightSidebar('HD');
+        }
+
+
+        play(index) {
+            this.index = Math.max(0, Math.min(this.links.length - 1, index));
+            this.mp.reloadUrl(this.links[this.index].url);
+            this.mp.showToast("播放" + this.links[this.index].name);
+        }
+
+        playNext() {
+            this.play(this.index + 1)
+        }
+
     }
 
-    var mp = new MuiPlayer(config);
-    var player = new Player(mp);
-    player.play({{index}});
-    mp.openFullScreen();
+    var player = new Player(links);
+    player.init();
 
-    mp.on('fullscreen-change', function (event) {
-        mp.showRightSidebar('HD');
-    });
-
-
-    function do_play(index) {
-        player.play(index);
-    };
 
 
 
