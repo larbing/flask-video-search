@@ -2,138 +2,126 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f1f1f1;
+    background-color: #f4f4f4;
 }
-.search-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+
+.header {
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    overflow: hidden;
-}
-.search-form {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-    width: 80%;
-}
-.search-container form {
-    margin-top: 20px;
-}
-.search-form input[type="text"] {
-    width: 70%;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
 }
-.search-form button {
-    width: 20%;
+
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    margin-top: 60px;
+    /* 跟.header的高度相匹配 */
+    max-width: 50%;
+    /* 调整此处 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search-input {
+    flex-grow: 1;
     padding: 10px;
     border: none;
-    background-color: #4285f4;
-    color: #fff;
-    font-size: 16px;
+    border-radius: 20px 0 0 20px;
+    outline: none;
+    border: 2px solid #ccc;
+    width: 60%;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
     cursor: pointer;
+    border-radius: 0 20px 20px 0;
+}
+
+.video-list {
+    margin-top: 160px;
+    /* 调整这个值以适应你的设计 */
+    padding: 0 10px;
+}
+
+.video-item {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
     border-radius: 5px;
-    margin-left: 10px;
-}
-.search-form button:hover {
-    background-color: #357ae8;
-}
-.search-results h2 {
-    color: #4285f4;
-    font-size: 28px;
-    margin-bottom: 20px;
-}
-.search-results ul {
-    list-style-type: none;
-    padding: 0;
-}
-.search-results li {
-    border-bottom: 1px solid #ddd;
-    padding: 15px 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
     display: flex;
-    align-items: flex-start;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    align-items: center;
 }
-.search-results a {
-    text-decoration: none;
-    color: #333;
+
+.video-thumbnail {
+    width: 80px;
+    /* 固定宽度 */
+    height: 120px;
+    /* 固定高度 */
+    object-fit: cover;
+    /* 保持纵横比并覆盖容器 */
+    margin-right: 10px;
+}
+
+.video-info {
     flex-grow: 1;
 }
-.search-results a:hover {
-    color: #4285f4;
-}
-.search-results img {
-    width: 200px;
-    height: 120px;
-    object-fit: cover;
-    margin-right: 15px;
-}
-.search-results .title {
-    font-size: 18px;
+
+.video-title {
     font-weight: bold;
     margin-bottom: 5px;
 }
-.search-results .snippet {
-    color: #333;
-    font-size: 14px;
-    margin-bottom: 10px;
+
+.video-meta {
+    color: #888;
+    font-size: 12px;
 }
-.search-results .url:hover {
-    color: #4285f4;
-    text-decoration: underline;
-}
-.highlight {
-    background-color: #f1f1f1;
-}
-@keyframes highlight {
-    0% { background-color: #fff; }
-    100% { background-color: #f1f1f1; }
-}
-.pagination {
+
+.episode-info {
     display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    padding: 10px 0;
+    align-items: center;
+    margin-top: 5px;
 }
-.pagination a {
-    margin: 0 5px;
-    text-decoration: none;
-    color: #333;
-    cursor: pointer;
-    padding: 5px 10px;
-    border: 1px solid #ddd;
+
+.episode-number {
+    font-weight: bold;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    /* 设置边框宽度和颜色 */
+    padding: 2px 5px;
+    /* 内边距 */
     border-radius: 5px;
+    /* 边框圆角 */
+    background-color: #f9f9f9;
+    /* 背景色 */
     font-size: 14px;
+    /* 调整字体大小 */
+    line-height: 1;
+    /* 调整行高，避免文字过于拥挤 */
+    text-decoration: none; /* 移除下划线 */
+    color: inherit; /* 继承父元素的文本颜色 */
 }
-.pagination a:hover {
-    color: #4285f4;
-    border-color: #4285f4;
+
+#pagination {
+    text-align: center;
+    margin-top: 20px;
 }
-.pagination .active {
-    background-color: #4285f4;
-    color: #fff;
-    border-color: #4285f4;
+
+button {
+    margin: 0 10px;
+    padding: 5px 10px;
 }
-.episode-nav {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-.episode-nav a {
-    color: #333;
-    text-decoration: none;
-}
-.episode-nav a:hover {
-    color: #4285f4;
-}
-.result-count {
-    margin-bottom: 20px;
-    font-size: 16px;
-    color: #333;
+
+form {
+    width: 80%; /* 可以根据需要调整 */
+    max-width: auto ; /* 设置最大宽度 */
+    margin: 0 auto; /* 水平居中 */
 }

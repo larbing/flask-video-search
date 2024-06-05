@@ -1,78 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Search Results</title>
+    <title>视频搜索结果</title>
     <link rel="stylesheet" type="text/css" href="/static/search.css" />
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var searchResults = document.querySelectorAll('.search-results li');
-            var resultCount = searchResults.length;
-            var resultCountElement = document.createElement('div');
-            resultCountElement.className = 'result-count';
-            resultCountElement.textContent = 'Showing ' + resultCount + ' results';
-            document.querySelector('.search-results').prepend(resultCountElement);
 
-            searchResults.forEach(function(result) {
-                result.addEventListener('click', function() {
-                    searchResults.forEach(function(res) {
-                        res.classList.remove('highlight');
-                    });
-                    this.classList.add('highlight');
-                    this.style.animation = 'highlight 0.3s forwards';
-                });
-            });
-        });
-    </script>
 </head>
+
 <body>
-    <div class="search-container">
-        <div class="search-form">
-            <form action="/search" method="get" class="search-form">
-                <input type="text" value="{{ keyword }}" name="q" placeholder="Search videos...">
-                <button>Search</button>
-            </from>
-        </div>
-        <div class="search-results">
-            <h2>Search Results for "{{ keyword }}"</h2>
-            <ul>
-                {% for item in pageMaster %}
-                {% set video_info = get_info_by_id(item['id']) %}
-                <li>
-                    <img src="{{ item['image_url'] }}" alt="Video Thumbnail">
-                    <div>
-                        <a href="#">
-                            <div class="title">{{ item['title'] }}</div>
-                            <div class="snippet">{{ video_info['plot'] }}</div>
-                        </a>
-                        <div class="episode-nav">
-                            {% set size = video_info['links'] | length %}
-                            {% for link in video_info['links'] %}
-                                <a href="/player?name={{ keyword }}&index={{ loop.index0 }}" target="_blank" >{{ link.split('$')[0] }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </li>
-                {% endfor %}
-                <!-- Add more vi        deo search results as needed -->
-            </ul>
-            <div class="pagination">
-                <!-- <a href="{{ url_for('index.search',q=keyword,p=1 ) }}">首页</a> -->
-                {% if pageMaster.pagecount > 1 %}
-                <a href="{{ url_for('index.search',q=keyword,p=pageMaster.get_up_page() ) }}">&laquo; 上一页</a>
-                {% for i in pageMaster.get_pagination_bar() %}
-                    {% if pageMaster.is_current_page(i)  %}
-                        <a href="#" class="active">{{ i }}</a>
-                    {% else %}
-                        <a href="{{  url_for('index.search',q=keyword,p=i)  }}">{{ i }}</a>
-                    {% endif %}
-                {% endfor %}
-                <a href="{{ url_for('index.search',q=keyword,p=pageMaster.get_next_page() ) }}">下一页 &raquo;</a>
-                {% endif %}
-                <!-- <a href="{{ url_for('index.search',q=keyword,p=pageMaster.pagecount ) }}"> 末页</a> -->
-            </div>
+
+    <div class="header">
+        <div class="search-container">
+            <form action="/search" method="get">
+                <input type="text" class="search-input" placeholder="搜索..." value="{{ keyword }}" name="q">
+                <button class="search-button" type="submit">搜索</button>
+            </form>
         </div>
     </div>
+
+    <div class="video-list">
+        {% for item in pageMaster %}
+        {% set video_info = get_info_by_id(item['id']) %}
+        <div class="video-item">
+            <img src="{{ item['image_url'] }}" alt="Video Thumbnail" class="video-thumbnail">
+            <div class="video-info">
+                <div class="video-title">{{ item['title'] }}</div>
+                <div class="video-meta">{{ video_info['plot'] }}</div>
+                <div class="episode-info">
+                    {% set size = video_info['links'] | length %}
+                    {% for link in video_info['links'] %}
+                    <a class="episode-number" href="/player?name={{ keyword }}&index={{ loop.index0 }}"
+                        target="_blank">{{ link.split('$')[0] }}</a>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- 更多视频 -->
+    </div>
+
+    <div id="pagination">
+
+        {% if pageMaster.pagecount > 1 %}
+        <button><a href="{{ url_for('index.search',q=keyword,p=pageMaster.get_up_page() ) }}">&laquo; 上一页</a></button>
+        {% for i in pageMaster.get_pagination_bar() %}
+        {% if pageMaster.is_current_page(i) %}
+        <button><a href="#" class="active">{{ i }}</a></button>
+        {% else %}
+        <button><a href="{{  url_for('index.search',q=keyword,p=i)  }}">{{ i }}</a></button>
+        {% endif %}
+        {% endfor %}
+        <button><a href="{{ url_for('index.search',q=keyword,p=pageMaster.get_next_page() ) }}">下一页 &raquo;</a></button>
+        {% endif %}
+    </div>
+
 </body>
+
 </html>
