@@ -31,7 +31,7 @@
                 <div class="episode-info">
                     {% set size = video_info['links'] | length %}
                     {% for link in video_info['links'] %}
-                    <a class="episode-number" href="/player?name={{ keyword }}&index={{ loop.index0 }}"
+                    <a class="episode-number" href="/player?name={{ item['title'] }}&index={{ loop.index0 }}"
                         target="_blank">{{ link.split('$')[0] }}</a>
                     {% endfor %}
 
