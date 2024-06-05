@@ -1,127 +1,125 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
+       /* CSS样式 */
+       body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
 
-.header {
-    background-color: #fff;
-    padding: 10px;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
-}
+   .header {
+        background-color: #fff;
+        padding: 10px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0,.1);
+    }
 
-.search-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: left;
-    margin-top: 60px;
-    /* 跟.header的高度相匹配 */
-    max-width: 50%;
-    /* 调整此处 */
-    margin-left: auto;
-    margin-right: auto;
-}
+   .search-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 60px;
+        max-width: 50%; /* 调整最大宽度 */
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 10px; /* 增加左右填充 */
+    }
 
-.search-input {
-    flex-grow: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 20px 0 0 20px;
-    outline: none;
-    border: 2px solid #ccc;
-    width: 60%;
-}
+   .search-input {
+        flex-grow: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 20px 0 0 20px;
+        outline: none;
+        border: 2px solid #ccc;
+        width: 50%; /* 调整输入框宽度 */
+    }
 
-.search-button {
+   .search-button {
     padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 0 20px 20px 0;
-}
+background-color: #4CAF50;
+color: white;
+border: none;
+cursor: pointer;
+border-radius: 0 20px 20px 0;
+min-width: 20px; /* 添加最小宽度 */
+white-space: nowrap; /* 防止文本换行 */
+    }
 
-.video-list {
-    margin-top: 160px;
-    /* 调整这个值以适应你的设计 */
-    padding: 0 10px;
-}
+    @media (max-width: 600px) { /* 媒体查询 */
+       .search-container {
+            flex-direction: column; /* 将布局改为垂直排列 */
+            align-items: stretch; /* 元素拉伸以占满可用空间 */
+        }
 
-.video-item {
-    background-color: #fff;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
-    display: flex;
-    align-items: center;
-}
+       .search-input,.search-button {
+            width: 100%; /* 输入框和按钮占满整个宽度 */
+            margin-bottom: 10px; /* 在手机上添加间隔 */
+        }
+    }
 
-.video-thumbnail {
-    width: 80px;
-    /* 固定宽度 */
-    height: 120px;
-    /* 固定高度 */
-    object-fit: cover;
-    /* 保持纵横比并覆盖容器 */
-    margin-right: 10px;
-}
+   .video-list {
+        margin-top: 160px;
+        padding: 0 10px;
+    }
 
-.video-info {
-    flex-grow: 1;
-}
+   .video-item {
+        background-color: #fff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0,.1);
+        display: flex;
+        align-items: center;
+    }
 
-.video-title {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
+   .video-thumbnail {
+        width: 60px; /* 调整缩略图宽度 */
+        height: 90px; /* 调整缩略图高度 */
+        object-fit: cover;
+        margin-right: 10px;
+    }
 
-.video-meta {
-    color: #888;
-    font-size: 12px;
-}
+   .video-info {
+        flex-grow: 1;
+    }
 
-.episode-info {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
-}
+   .video-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
 
-.episode-number {
-    font-weight: bold;
-    margin-right: 5px;
-    border: 1px solid #ccc;
-    /* 设置边框宽度和颜色 */
-    padding: 2px 5px;
-    /* 内边距 */
-    border-radius: 5px;
-    /* 边框圆角 */
-    background-color: #f9f9f9;
-    /* 背景色 */
-    font-size: 14px;
-    /* 调整字体大小 */
-    line-height: 1;
-    /* 调整行高，避免文字过于拥挤 */
-    text-decoration: none; /* 移除下划线 */
-    color: inherit; /* 继承父元素的文本颜色 */
-}
+   .video-meta {
+        color: #888;
+        font-size: 12px;
+    }
 
-#pagination {
-    text-align: center;
-    margin-top: 20px;
-}
+   .episode-info {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+    }
 
-button {
-    margin: 0 10px;
-    padding: 5px 10px;
-}
+   .episode-number {
+        font-weight: bold;
+        margin-right: 5px;
+        border: 1px solid #ccc;
+        padding: 2px 5px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        font-size: 14px;
+        line-height: 1;
+        text-decoration: none;
+        color: inherit;
+    }
 
-form {
-    width: 80%; /* 可以根据需要调整 */
-    max-width: auto ; /* 设置最大宽度 */
-    margin: 0 auto; /* 水平居中 */
-}
+    #pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    button {
+        margin: 0 10px;
+        padding: 5px 10px;
+    }
