@@ -1,125 +1,141 @@
        /* CSS样式 */
        body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
+           font-family: Arial, sans-serif;
+           margin: 0;
+           padding: 0;
+           background-color: #f4f4f4;
+       }
 
-   .header {
-        background-color: #fff;
-        padding: 10px;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        box-shadow: 0 2px 4px rgba(0, 0, 0,.1);
-    }
+       .header {
+           background-color: #fff;
+           padding: 10px;
+           position: fixed;
+           top: 0;
+           width: 100%;
+           box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+       }
 
-   .search-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 60px;
-        max-width: 50%; /* 调整最大宽度 */
-        margin-left: auto;
-        margin-right: auto;
-        padding: 0 10px; /* 增加左右填充 */
-    }
-
-   .search-input {
-        flex-grow: 1;
-        padding: 10px;
-        border: none;
-        border-radius: 20px 0 0 20px;
-        outline: none;
-        border: 2px solid #ccc;
-        width: 50%; /* 调整输入框宽度 */
-    }
-
-   .search-button {
-    padding: 10px 20px;
-background-color: #4CAF50;
-color: white;
-border: none;
-cursor: pointer;
-border-radius: 0 20px 20px 0;
-min-width: 20px; /* 添加最小宽度 */
-white-space: nowrap; /* 防止文本换行 */
-    }
-
-    @media (max-width: 600px) { /* 媒体查询 */
        .search-container {
-            flex-direction: column; /* 将布局改为垂直排列 */
-            align-items: stretch; /* 元素拉伸以占满可用空间 */
-        }
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           margin-top: 60px;
+           max-width: 50%;
+           /* 调整最大宽度 */
+           margin-left: auto;
+           margin-right: auto;
+           padding: 0 10px;
+           /* 增加左右填充 */
+       }
 
-       .search-input,.search-button {
-            width: 100%; /* 输入框和按钮占满整个宽度 */
-            margin-bottom: 10px; /* 在手机上添加间隔 */
-        }
-    }
+       .search-input {
+           flex-grow: 1;
+           padding: 10px;
+           border: none;
+           border-radius: 20px 0 0 20px;
+           outline: none;
+           border: 2px solid #ccc;
+           width: 50%;
+           /* 调整输入框宽度 */
+       }
 
-   .video-list {
-        margin-top: 160px;
-        padding: 0 10px;
-    }
+       .search-button {
+           padding: 10px 20px;
+           background-color: #4CAF50;
+           color: white;
+           border: none;
+           cursor: pointer;
+           border-radius: 0 20px 20px 0;
+           min-width: 20px;
+           /* 添加最小宽度 */
+           white-space: nowrap;
+           /* 防止文本换行 */
+       }
 
-   .video-item {
-        background-color: #fff;
-        padding: 15px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0,.1);
-        display: flex;
-        align-items: center;
-    }
+       @media (max-width: 600px) {
 
-   .video-thumbnail {
-        width: 60px; /* 调整缩略图宽度 */
-        height: 90px; /* 调整缩略图高度 */
-        object-fit: cover;
-        margin-right: 10px;
-    }
+           /* 媒体查询 */
+           .search-container {
+               flex-direction: column;
+               /* 将布局改为垂直排列 */
+               align-items: stretch;
+               /* 元素拉伸以占满可用空间 */
+           }
 
-   .video-info {
-        flex-grow: 1;
-    }
+           .search-input,
+           .search-button {
+               width: 100%;
+               /* 输入框和按钮占满整个宽度 */
+               margin-bottom: 10px;
+               /* 在手机上添加间隔 */
+           }
+       }
 
-   .video-title {
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
+       .video-list {
+           margin-top: 160px;
+           padding: 0 10px;
+       }
 
-   .video-meta {
-        color: #888;
-        font-size: 12px;
-    }
+       .video-item {
+           background-color: #fff;
+           padding: 15px;
+           margin-bottom: 10px;
+           border-radius: 5px;
+           box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+           display: flex;
+           align-items: center;
+       }
 
-   .episode-info {
-        display: flex;
-        align-items: center;
-        margin-top: 5px;
-    }
+       .video-thumbnail {
+           width: 60px;
+           /* 调整缩略图宽度 */
+           height: 90px;
+           /* 调整缩略图高度 */
+           object-fit: cover;
+           margin-right: 10px;
+       }
 
-   .episode-number {
-        font-weight: bold;
-        margin-right: 5px;
-        border: 1px solid #ccc;
-        padding: 2px 5px;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-        font-size: 14px;
-        line-height: 1;
-        text-decoration: none;
-        color: inherit;
-    }
+       .video-info {
+           flex-grow: 1;
+       }
 
-    #pagination {
-        text-align: center;
-        margin-top: 20px;
-    }
+       .video-title {
+           font-weight: bold;
+           margin-bottom: 5px;
+       }
 
-    button {
-        margin: 0 10px;
-        padding: 5px 10px;
-    }
+       .video-meta {
+           color: #888;
+           font-size: 12px;
+       }
+
+       .episode-info {
+           display: flex;
+           flex-wrap: wrap;
+           /* 允许项目在跨越一行时换行 */
+           align-items: center;
+           margin-top: 5px;
+       }
+
+       .episode-number {
+           font-weight: bold;
+           margin-right: 5px;
+           border: 1px solid #ccc;
+           padding: 2px 5px;
+           border-radius: 5px;
+           background-color: #f9f9f9;
+           font-size: 14px;
+           line-height: 1;
+           text-decoration: none;
+           color: inherit;
+       }
+
+       #pagination {
+           text-align: center;
+           margin-top: 20px;
+       }
+
+       button {
+           margin: 0 10px;
+           padding: 5px 10px;
+       }
