@@ -128,7 +128,8 @@
            line-height: 1;
            text-decoration: none;
            color: inherit;
-           margin-top: 15px; /* 添加上边距 */
+           margin-top: 15px;
+           /* 添加上边距 */
        }
 
        #pagination {
@@ -139,4 +140,11 @@
        button {
            margin: 0 10px;
            padding: 5px 10px;
+       }
+
+       a {
+           color: inherit;
+           /* 继承父元素的颜色 */
+           text-decoration: none;
+           /* 移除下划线 */
        }
