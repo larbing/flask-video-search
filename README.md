@@ -8,10 +8,7 @@
 ~~~
 先下载并解压数据包到 /data 目录下
 
-docker run -d --rm -p 80:80 \
-            -v /data:/data \
-            --name {IMAGE_NAME} \
-            {USER_NAME}/{IMAGE_NAME}"
+运行 publish.sh
 ~~~
 
 ### 数据包下载地址
