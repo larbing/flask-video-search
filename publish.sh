@@ -29,7 +29,7 @@ echo "开始更新Docker应用..."
 
 
 clean_container(){
-# 检查容器是否存在
+        # 检查容器是否存在
         if [ "$(docker ps -a -q -f name=$DOCKER_CONTAINER_NAME)" ]; then
                 echo "找到名为 $DOCKER_CONTAINER_NAME 的容器，准备更新..."
                 stop_and_remove_old_container
