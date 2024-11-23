@@ -11,6 +11,13 @@ bp = Blueprint('api',__name__, url_prefix='/api')
 dBService = DBService()
 indexService = IndexService()
 
+@bp.get("/getVideoListByTitle")
+def api_get_video_list_by_title():
+    s = getString(request.args,'s',"")
+    titles = s.split(",")
+    pagination = indexService.search_by_titles(titles)
+    return success_response(pagination.resutls,pagination.pageInfo)
+
 @bp.post("/hot_video_list")
 def api_hot_video_list():
     type = getString(request.form,'type',"tv")
