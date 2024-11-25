@@ -5,7 +5,7 @@ from functools import wraps
 from flask import Blueprint,jsonify,Response,request
 
 from .services import * 
-from .utils import error_response,success_response,getInt,getString
+from .utils import error_response,success_response,getInt,getString,string_similarity
 from .requests import SearchRequest
 
 bp = Blueprint('apiv2',__name__, url_prefix='/apiv2')
@@ -106,7 +106,7 @@ def api_get_vod_by_vid():
 
 @bp.get("/search")
 def api_search():
-    return request.args.get('q')
+    return ""
 
 @bp.post("/searchForHanZi")
 @page_response

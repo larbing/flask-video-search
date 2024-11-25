@@ -3,7 +3,7 @@ import math
 from flask import Blueprint,jsonify,Response,request
 
 from .services import * 
-from .utils import error_response,success_response,getInt,getString
+from .utils import error_response,success_response,getInt,getString,string_similarity
 from .requests import SearchRequest
 
 bp = Blueprint('api',__name__, url_prefix='/api')
@@ -25,10 +25,15 @@ def api_hot_video_list():
     pagination = indexService.search_by_titles(titles)
     return success_response(pagination.resutls)
 
-@bp.post("/search")
+@bp.get("/search")
 def api_search():
-    req = SearchRequest(**request.form)
+    keyword = request.args.get('q', '')
+    pageNo = getInt(request.args,'p',1)
+    req = SearchRequest(name=keyword,page_no=pageNo)
     pagination = indexService.search_by_request(req)
+    pagination.resutls = sorted(pagination.resutls,
+                                key=lambda x: string_similarity(x.get('name')
+                               ,keyword),reverse=True)
     return success_response(pagination.resutls,pagination.pageInfo)
 
 @bp.post("/video_info")
