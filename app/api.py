@@ -25,17 +25,6 @@ def api_hot_video_list():
     pagination = indexService.search_by_titles(titles)
     return success_response(pagination.resutls)
 
-@bp.get("/search")
-def api_search():
-    keyword = request.args.get('q', '')
-    pageNo = getInt(request.args,'p',1)
-    req = SearchRequest(name=keyword,page_no=pageNo)
-    pagination = indexService.search_by_request(req)
-    pagination.resutls = sorted(pagination.resutls,
-                                key=lambda x: string_similarity(x.get('name')
-                               ,keyword),reverse=True)
-    return success_response(pagination.resutls,pagination.pageInfo)
-
 @bp.post("/video_info")
 def api_video_info():
     id = request.form.get('id')

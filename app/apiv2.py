@@ -106,7 +106,25 @@ def api_get_vod_by_vid():
 
 @bp.get("/search")
 def api_search():
-    return ""
+    keyword = request.args.get('q', '')
+    pageNo = getInt(request.args,'p',1)
+    req = SearchRequest(name=keyword,page_no=pageNo)
+    pagination = indexService.search_by_request(req)
+    pagination.resutls = sorted(pagination.resutls,
+                                key=lambda x: string_similarity(x.get('name')
+                               ,keyword),reverse=True)
+    res = list()
+    for p in pagination.resutls:
+        item = dict()
+        item['d_id'] = int(p.get('vid'))
+        item['d_name'] = p.get('name')
+        item['d_pic'] = p.get('image_url')
+        item['d_remarks'] = p.get('status')
+        item['d_score']= p.get('rating')
+        item['updated'] = p.get('updated')
+        res.append(item)
+
+    return success_response(res,pagination.pageInfo)
 
 @bp.post("/searchForHanZi")
 @page_response
