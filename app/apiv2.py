@@ -90,7 +90,7 @@ def api_get_vod_by_vid():
     info = supabaseService.get_info_by_vid(vid)
     if info is None:
         return error_response('视频不存在')
-
+    
     url_info = supabaseService.get_url_info_by_hash(info.get('hash'))
     
     res = dict()
@@ -99,10 +99,10 @@ def api_get_vod_by_vid():
     res['d_pic'] = info.get('image_url')
     res['d_remarks'] = info.get('status')
     res['d_score']= info.get('rating')
-    res['d_starring'] = info.get('cast')
+    res['d_starring'] = info.get('actor')
     res['d_lang'] = info.get('language')
-    res['d_content'] = info.get('plot')
-    res['d_type'] =  channelSettingsService.find_id_by_name(info.get('category'))
+    res['d_content'] = info.get('content')
+    res['d_type'] =  channelSettingsService.find_id_by_name(info.get('tags'))
     res['d_area'] = info.get('region')
     res['d_year'] = info.get('release_date')
     res['d_playurl'] =  "#".join(url_info.get('playurl')) if url_info else ""
