@@ -51,7 +51,7 @@ def api_get_vod_with_page():
     t_id = getInt(request.args,'d_type',10)
     req.content_type = channelSettingsService.find_name_by_id(t_id)
 
-    req.page_size = getInt(request.args,'pageSize',150)
+    req.page_size = getInt(request.args,'pageSize',50)
     if "pageLimit" in request.args:
       req.page_size = getInt(request.args,'pageLimit',1)
     
