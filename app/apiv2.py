@@ -82,8 +82,9 @@ def api_get_vod_by_pid():
     types = ('movie','movie','tv','movie','movie')
     type =  types[pid]
     titles = DoubanService.get_hot_video_titles(type,page_limit=page_size,page_start=page_start)
-    return indexService.search_by_titles(titles)
 
+    return supabaseService.search_by_titles(titles)
+    
 @bp.get("/getVodById")
 def api_get_vod_by_vid():
     vid = getString(request.args,'d_id')

@@ -208,13 +208,26 @@ class SupabaseService:
         pagination = Pagination(response.data,page,page_size,page_count,response.count)
         return pagination
     
+
+    def _make_in_filter(self,items:set) -> str:
+        """
+        A private method to generate a filter string for the 'in' operator.
+        
+        Parameters:
+            items (list): A list of items to be filtered.
+            
+        Returns:
+            str: A string representing the filter.
+        """
+        return '("'+ '","'.join(items) +'")'
+    
     def search_by_titles(self,titles:list) -> Pagination:
         response = self.supabase.table('video_info') \
                     .select("*",count='planned') \
-                    .filter('title','in',titles) \
+                    .filter('name','in',self._make_in_filter(titles) ) \
                     .order('updated', desc=True) \
                     .execute()  
-        
+                
         if( response.count < 1):
             return None
 
