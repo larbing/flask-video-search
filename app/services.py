@@ -17,6 +17,8 @@ from .utils import singleton
 from .models import Pagination
 from .requests import SearchRequest
 
+from supabase import create_client, Client
+
 @singleton
 class IndexService:
 
@@ -147,3 +149,61 @@ class ChannelSettingsService:
             if type_info['t_name'] == name:
                 return str(type_info['t_id'])
         return None
+
+
+SUPABASE_URL = "https://jzbgqtmygtqptuqdxapp.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6YmdxdG15Z3RxcHR1cWR4YXBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI4MzY3MTUsImV4cCI6MjA0ODQxMjcxNX0.8X18VADgYW7W_7NvcDgVvXRcA1yM8S0jUNvB0D9h98k"
+
+
+
+@singleton
+class SupabaseService:
+
+
+    def __init__(self) -> None:
+        self.supabase : Client = create_client(SUPABASE_URL,SUPABASE_KEY)
+
+    def get_info_by_vid(self,vid):
+        response = self.supabase.table('video_info').select("*").eq("vid",vid).limit(1).execute()
+
+        if not response.data:
+            return None
+        
+        return response.data[0]
+    
+    def get_url_info_by_hash(self,hash):
+        response = self.supabase.table('video_url').select("*").eq("hash",hash).limit(1).execute()
+
+        if not response.data:
+            return None
+        
+        return response.data[0]
+    
+    def get_list_by_tags(self,tags,page=1,page_size=50):
+        """
+        A method to get a list of video info records by given tags,page and page_size.
+        
+        Parameters:
+            tags (str): A comma-separated string of tags to search for.
+            page (int): The page number of the pagination. Default is 1.
+            page_size (int): The maximum number of records to retrieve in one request. Default is 50.
+            
+        Returns:
+            Pagination: A Pagination object containing the search results.
+        """
+        response = self.supabase.table('video_info') \
+                    .select("*",count='planned') \
+                    .eq("tags",tags) \
+                    .gte('release_date', 2018) \
+                    .order('updated', desc=True) \
+                    .range( (page-1)*page_size, page*page_size).execute()
+        
+        if( response.count < 1):
+            return None
+
+        page_count = response.count // page_size
+        if response.count % page_size != 0:
+            page_count += 1
+
+        pagination = Pagination(response.data,page,page_size,page_count,response.count)
+        return pagination

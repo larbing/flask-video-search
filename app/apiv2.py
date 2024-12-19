@@ -8,11 +8,13 @@ from .services import *
 from .utils import error_response,success_response,getInt,getString,string_similarity
 from .requests import SearchRequest
 
+
 bp = Blueprint('apiv2',__name__, url_prefix='/apiv2')
 
 indexService           = IndexService()
 dbService              = DBService()
 channelSettingsService = ChannelSettingsService()
+supabaseService        = SupabaseService()
 
 
 def page_response(func):
@@ -55,8 +57,8 @@ def api_get_vod_with_page():
     
     req.page_no   = getInt(request.args,'page') + 1
 
-    page = indexService.search_by_request(req)
-    resutls = sorted(page.resutls,key=lambda x:x.get('updated'),reverse=True)
+    page = supabaseService.get_list_by_tags(req.content_type,req.page_no,req.page_size)
+    resutls = sorted(page.resutls,key=lambda x:x.get('release_date'),reverse=True)
     res = list()
     for p in resutls:
         item = dict()
@@ -66,6 +68,7 @@ def api_get_vod_with_page():
         item['d_type'] = str(t_id)
         item['d_remarks'] = p.get('status')
         item['d_score']= p.get('rating')
+        item['release_date'] = p.get('release_date')
         res.append(item)
 
     return success_response(json.dumps(res),{'ret': 1,'total': page.total})
@@ -84,9 +87,11 @@ def api_get_vod_by_pid():
 @bp.get("/getVodById")
 def api_get_vod_by_vid():
     vid = getString(request.args,'d_id')
-    info = dbService.get_info_by_vid(vid)
+    info = supabaseService.get_info_by_vid(vid)
     if info is None:
         return error_response('视频不存在')
+
+    url_info = supabaseService.get_url_info_by_hash(info.get('hash'))
     
     res = dict()
     res['d_id'] = int(info.get('vid'))
@@ -100,7 +105,7 @@ def api_get_vod_by_vid():
     res['d_type'] =  channelSettingsService.find_id_by_name(info.get('category'))
     res['d_area'] = info.get('region')
     res['d_year'] = info.get('release_date')
-    res['d_playurl'] = "#".join(info.get('m3u8_links'))
+    res['d_playurl'] =  "#".join(url_info.get('playurl')) if url_info else ""
     return success_response(json.dumps(res),{'ret': 1})
     
 
