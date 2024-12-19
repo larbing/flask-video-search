@@ -207,3 +207,15 @@ class SupabaseService:
 
         pagination = Pagination(response.data,page,page_size,page_count,response.count)
         return pagination
+    
+    def search_by_titles(self,titles:list) -> Pagination:
+        response = self.supabase.table('video_info') \
+                    .select("*",count='planned') \
+                    .filter('title','in',titles) \
+                    .order('updated', desc=True) \
+                    .execute()  
+        
+        if( response.count < 1):
+            return None
+
+        return Pagination(response.data,1,response.count,1,response.count)
