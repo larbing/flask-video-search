@@ -8,7 +8,7 @@ from whoosh.query import And,Or
 
 from jieba.analyse import ChineseAnalyzer
 
-
+import meilisearch
 import pickledb
 
 from .conf import *
@@ -232,3 +232,24 @@ class SupabaseService:
             return None
 
         return Pagination(response.data,1,response.count,1,response.count)
+
+@singleton
+class MeiliSearchService:
+
+    def __init__(self):
+        self.client = meilisearch.Client('http://192.168.2.101:7700')
+        self.index = self.client.index("video_info")
+        self.index.update_settings({
+            "searchableAttributes": ["keywords"]
+        })
+
+
+    def search(self,keyword:str,page:int=1,page_size:int=10) -> Pagination:
+        results = self.index.search(keyword, {'rankingScoreThreshold': 0.9,'offset': (page -1) * page_size ,'limit': page_size })
+        total = results['estimatedTotalHits']
+        page_count = total // page_size
+        if total % page_size != 0:
+            page_count += 1
+
+        return Pagination(results['hits'],page,page_size,page_count,total)
+

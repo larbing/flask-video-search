@@ -15,6 +15,7 @@ indexService           = IndexService()
 dbService              = DBService()
 channelSettingsService = ChannelSettingsService()
 supabaseService        = SupabaseService()
+meiliSearchService     = MeiliSearchService()
 
 
 def page_response(func):
@@ -114,8 +115,11 @@ def api_get_vod_by_vid():
 def api_search():
     keyword = request.args.get('q', '')
     pageNo = getInt(request.args,'p',1)
-    req = SearchRequest(name=keyword,page_no=pageNo)
-    pagination = indexService.search_by_request(req)
+    # req = SearchRequest(name=keyword,page_no=pageNo)
+    if not keyword:
+        return error_response('关键字不能为空')
+
+    pagination = meiliSearchService.search(keyword,pageNo)
     pagination.resutls = sorted(pagination.resutls,
                                 key=lambda x: string_similarity(x.get('name')
                                ,keyword),reverse=True)
