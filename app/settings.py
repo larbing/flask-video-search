@@ -1,4 +1,13 @@
 
+SUPABASE_URL = "https://jzbgqtmygtqptuqdxapp.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6YmdxdG15Z3RxcHR1cWR4YXBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI4MzY3MTUsImV4cCI6MjA0ODQxMjcxNX0.8X18VADgYW7W_7NvcDgVvXRcA1yM8S0jUNvB0D9h98k"
+
+
+MEILISEARCH_URL = "http://192.168.2.101:7700"
+
+
+
+
 
 channel_settings = [
     
@@ -25,3 +34,5 @@ channel_settings = [
     {"t_id":11000,"t_name":"日韩动漫","t_pid":"4","t_title":""},
     {"t_id":12000,"t_name":"欧美动漫","t_pid":"4","t_title":""}
 ]
+
+

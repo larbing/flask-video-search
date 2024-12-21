@@ -12,7 +12,7 @@ import meilisearch
 import pickledb
 
 from .conf import *
-from .settings import channel_settings
+from .settings import channel_settings,SUPABASE_KEY,SUPABASE_URL,MEILISEARCH_URL
 from .utils import singleton
 from .models import Pagination
 from .requests import SearchRequest
@@ -151,14 +151,10 @@ class ChannelSettingsService:
         return None
 
 
-SUPABASE_URL = "https://jzbgqtmygtqptuqdxapp.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6YmdxdG15Z3RxcHR1cWR4YXBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI4MzY3MTUsImV4cCI6MjA0ODQxMjcxNX0.8X18VADgYW7W_7NvcDgVvXRcA1yM8S0jUNvB0D9h98k"
-
 
 
 @singleton
 class SupabaseService:
-
 
     def __init__(self) -> None:
         self.supabase : Client = create_client(SUPABASE_URL,SUPABASE_KEY)
@@ -237,7 +233,7 @@ class SupabaseService:
 class MeiliSearchService:
 
     def __init__(self):
-        self.client = meilisearch.Client('http://192.168.2.101:7700')
+        self.client = meilisearch.Client(MEILISEARCH_URL)
         self.index = self.client.index("video_info")
         self.index.update_settings({
             "searchableAttributes": ["keywords","tags","actor","director","region"],
