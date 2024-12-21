@@ -29,7 +29,7 @@ def page_response(func):
         res = list()
         for p in page.resutls:
             item = dict()
-            item['d_id'] = int(p.get('vid'))
+            item['d_id'] = int(p.get('id'))
             item['d_name'] = p.get('name')
             item['d_pic'] = p.get('image_url')
             item['d_remarks'] = p.get('status')
@@ -63,7 +63,7 @@ def api_get_vod_with_page():
     res = list()
     for p in resutls:
         item = dict()
-        item['d_id'] = int(p.get('vid'))
+        item['d_id'] = int(p.get('id'))
         item['d_name'] = p.get('name')
         item['d_pic'] = p.get('image_url')
         item['d_type'] = str(t_id)
@@ -89,14 +89,14 @@ def api_get_vod_by_pid():
 @bp.get("/getVodById")
 def api_get_vod_by_vid():
     vid = getString(request.args,'d_id')
-    info = supabaseService.get_info_by_vid(vid)
+    info = supabaseService.get_info_by_id(vid)
     if info is None:
         return error_response('视频不存在')
     
     url_info = supabaseService.get_url_info_by_hash(info.get('hash'))
     
     res = dict()
-    res['d_id'] = int(info.get('vid'))
+    res['d_id'] = int(info.get('id'))
     res['d_name'] = info.get('name')
     res['d_pic'] = info.get('image_url')
     res['d_remarks'] = info.get('status')
@@ -140,7 +140,7 @@ def api_search():
 @page_response
 def api_search_for_hanzi():
     keys= request.form.get('keys')
-    return indexService.search(keys)
+    return meiliSearchService.search(keys)
 
 @bp.get("/getTodayUp")
 @page_response

@@ -166,6 +166,14 @@ class SupabaseService:
             return None
         
         return response.data[0]
+
+    def get_info_by_id(self,vid):
+        response = self.supabase.table('video_info').select("*").eq("id",vid).limit(1).execute()
+
+        if not response.data:
+            return None
+        
+        return response.data[0]
     
     def get_url_info_by_hash(self,hash):
         response = self.supabase.table('video_url').select("*").eq("hash",hash).limit(1).execute()
