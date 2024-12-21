@@ -240,12 +240,17 @@ class MeiliSearchService:
         self.client = meilisearch.Client('http://192.168.2.101:7700')
         self.index = self.client.index("video_info")
         self.index.update_settings({
-            "searchableAttributes": ["keywords","tags","actor","director","region"]
+            "searchableAttributes": ["keywords","tags","actor","director","region"],
+            "sortableAttributes": ["release_date"]
         })
 
 
     def search(self,keyword:str,page:int=1,page_size:int=10) -> Pagination:
-        results = self.index.search(keyword, {'rankingScoreThreshold': 0.7,'offset': (page -1) * page_size ,'limit': page_size })
+        results = self.index.search(keyword, {
+            'rankingScoreThreshold': 0.7,
+            'offset': (page -1) * page_size ,'limit': page_size,
+            "sort": ["release_date:desc"] 
+        })
         total = results['estimatedTotalHits']
         page_count = total // page_size
         if total % page_size != 0:
